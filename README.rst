@@ -21,12 +21,20 @@ Load and parse an Atom XML file:
 
     >>> import atoma
     >>> feed = atoma.parse_atom_file('atom-feed.xml')
-    >>> feed.title.value
-    "Richard Plop's news"
     >>> feed.authors
     [AtomPerson(name='Richard Plop', uri=None, email='richard@plop.org')]
     >>> len(feed.entries)
     5
+
+Parsing feeds from the Internet is easy as well:
+
+.. code:: python
+
+    >>> import atoma, requests
+    >>> response = requests.get('http://lucumr.pocoo.org/feed.atom')
+    >>> feed = atoma.parse_atom_bytes(response.content)
+    >>> feed.title.value
+    "Armin Ronacher's Thoughts and Writings"
 
 Features
 --------
@@ -35,6 +43,15 @@ Features
 * Typed: atom feed decomposed into meaningful Python objects
 * Secure: uses defusedxml to load untrusted feeds
 * Compatible with Python 3.6+
+
+Useful Resources
+----------------
+
+To use this library a basic understanding of Atom feeds is required. The
+`Introduction to Atom <https://validator.w3.org/feed/docs/atom.htm>`_ is a must
+read. The `RFC 4287 <https://tools.ietf.org/html/rfc4287>`_ can help lift some
+ambiguities. Finally the `feed validator <https://validator.w3.org/feed/>`_ is
+great to test hand-crafted feeds.
 
 Non-implemented Atom Features
 -----------------------------
