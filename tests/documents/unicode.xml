@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">Rïchàrd Plop's blog</title>
+  <id>http://richard.plop/feed.atom</id>
+  <updated>2017-06-05T00:00:00Z</updated>
+  <link href="http://richard.plop/" />
+  <link href="http://richard.plop/feed.atom" rel="self" />
+  <subtitle type="text">Rïchàrd Plop's personal blog.</subtitle>
+  <generator>Werkzeug</generator>
+  <category term="python" label="Python"></category>
+
+  <entry xml:base="http://richard.plop/feed.atom">
+    <title type="text">Article n°1</title>
+    <id>http://richard.plop/2017/6/5/article-1</id>
+    <updated>2017-06-05T00:00:00Z</updated>
+    <link href="http://richard.plop/2017/6/5/article-1" />
+    <author>
+      <name>Rïchàrd Plop</name>
+    </author>
+    <content type="html">&lt;p&gt;&lt;/p&gt;</content>
+  </entry>
+
+  <entry xml:base="http://richard.plop/feed.atom">
+    <title type="text">Unicode snowman</title>
+    <id>http://richard.plop/2017/6/5/article-2</id>
+    <updated>2016-12-29T00:00:00Z</updated>
+    <link href="http://richard.plop/2017/6/5/unicode-snowman" />
+    <author>
+      <name>Rïchàrd Plop</name>
+    </author>
+    <content>☃</content>
+  </entry>
+
+  <entry>
+    <title>Unicode snowman 3</title>
+    <id>http://richard.plop/2017/6/5/article-3</id>
+    <updated>2016-12-29T00:00:00Z</updated>
+    <link href="http://richard.plop/2017/6/5/unicode-snowman" />
+    <content>☃</content>
+    <source>
+        <id>http://example.org/</id>
+        <title>Example, Inc.</title>
+        <updated>2003-12-13T18:30:02Z</updated>
+        <author>
+          <name>Foo Bar</name>
+        </author>
+    </source>
+  </entry>
+
+</feed>
+

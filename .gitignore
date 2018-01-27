@@ -1,0 +1,7 @@
+.pyc
+__pycache__
+.cache
+build
+dist
+atoma.egg-info
+.coverage

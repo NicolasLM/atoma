@@ -1,0 +1,17 @@
+language: python
+
+python:
+    - "3.6"
+
+install:
+    - pip install -e .[tests]
+
+script:
+    - pytest -v --cov=atoma tests/
+    - pycodestyle atoma tests
+
+after_success:
+  - coveralls
+
+notifications:
+    email: false
