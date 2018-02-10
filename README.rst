@@ -48,7 +48,7 @@ Useful Resources
 ----------------
 
 To use this library a basic understanding of Atom feeds is required. The
-`Introduction to Atom <https://validator.w3.org/feed/docs/atom.htm>`_ is a must
+`Introduction to Atom <https://validator.w3.org/feed/docs/atom.html>`_ is a must
 read. The `RFC 4287 <https://tools.ietf.org/html/rfc4287>`_ can help lift some
 ambiguities. Finally the `feed validator <https://validator.w3.org/feed/>`_ is
 great to test hand-crafted feeds.
