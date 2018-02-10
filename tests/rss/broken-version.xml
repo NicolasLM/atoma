@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<rss version="1.0">
+    <channel>
+        <title>Liftoff News</title>
+        <link>http://liftoff.msfc.nasa.gov/</link>
+        <description>Liftoff to Space Exploration.</description>
+
+        <item>
+            <title>The &#x26;amp; entity</title>
+        </item>
+
+    </channel>
+</rss>

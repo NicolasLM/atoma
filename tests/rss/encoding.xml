@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+    <channel>
+        <title>Liftoff News</title>
+        <link>http://liftoff.msfc.nasa.gov/</link>
+        <description>Liftoff to Space Exploration.</description>
+
+        <item>
+            <title>The &#x26;amp; entity</title>
+        </item>
+        <item>
+            <title>Nice &#x3C;gorilla&#x3E; what's he weigh?</title>
+        </item>
+        <item>
+            <title>Rïchàrd Plop's ☃</title>
+            <description><![CDATA[I'm headed for France. I wasn't gonna go this year, but then last week <a href="http://www.imdb.com/title/tt0086525/">Valley Girl</a> came out and I said to myself, Joe Bob, you gotta get out of the country for a while.]]></description>
+        </item>
+
+    </channel>
+</rss>

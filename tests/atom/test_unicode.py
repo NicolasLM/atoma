@@ -117,4 +117,4 @@ def test_rfc_unicode():
         logo=None,
         entries=[expected_entry_1, expected_entry_2, expected_entry_3]
     )
-    assert parse_atom_file('tests/documents/unicode.xml') == expected
+    assert parse_atom_file('tests/atom/unicode.xml') == expected

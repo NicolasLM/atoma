@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+<channel>
+    <title>Foo</title>
+    <link>http://foo.bar</link>
+    <description>Foo bar.</description>
+
+    <category>Media</category>
+    <copyright>Public domain</copyright>
+    <ttl>60</ttl>
+
+    <image>
+        <link>http://dallas.example.com</link>
+        <title>Dallas Times-Herald</title>
+        <url>http://dallas.example.com/masthead.gif</url>
+        <description>Read the Dallas Times-Herald</description>
+        <height>32</height>
+        <width>96</width>
+    </image>
+
+    <item>
+        <title>Baz item</title>
+        <source url="http://la.example.com/rss.xml">Los Angeles Herald-Examiner</source>
+        <category>Photo</category>
+        <category>Video</category>
+        <enclosure length="24986239" type="audio/mpeg" url="http://dallas.example.com/joebob_050689.mp3" />
+        <enclosure length="0" type="application/json" url="http://dallas.example.com/foo.json" />
+    </item>
+
+</channel>
+</rss>

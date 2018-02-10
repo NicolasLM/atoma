@@ -69,5 +69,5 @@ def test_rfc_more_extensive():
         ]
     )
     assert (
-        parse_atom_file('tests/documents/rfc-more-extensive.xml') == expected
+        parse_atom_file('tests/atom/rfc-more-extensive.xml') == expected
     )

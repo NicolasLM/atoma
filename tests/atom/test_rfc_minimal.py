@@ -53,4 +53,4 @@ def test_rfc_minimal():
             expected_entry
         ]
     )
-    assert parse_atom_file('tests/documents/rfc-minimal.xml') == expected
+    assert parse_atom_file('tests/atom/rfc-minimal.xml') == expected
