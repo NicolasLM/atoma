@@ -44,6 +44,14 @@ Features
 * Secure: uses defusedxml to load untrusted feeds
 * Compatible with Python 3.6+
 
+Security warning
+----------------
+
+If you use this library to display content from feeds in a web page, you NEED
+to clean the HTML contained in the feeds to prevent `Cross-site scripting (XSS)
+<https://en.wikipedia.org/wiki/Cross-site_scripting>`_. The `bleach
+<https://github.com/mozilla/bleach>`_ library is recommended for cleaning feeds.
+
 Useful Resources
 ----------------
 
