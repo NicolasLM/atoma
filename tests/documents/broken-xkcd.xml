@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>xkcd.com</title>
+    <link href="https://xkcd.com/" rel="alternate"></link>
+    <id>https://xkcd.com/</id>
+    <updated>2018-02-02T00:00:00Z</updated>
+    <entry>
+        <title>Chicken Pox and Name Statistics</title>
+        <link href="https://xkcd.com/1950/" rel="alternate"></link>
+        <updated>2018-02-02T00:00:00Z</updated>
+        <id>https://xkcd.com/1950/</id>
+        <summary type="html">&lt;img
+            src="https://imgs.xkcd.com/comics/chicken_pox_and_name_statistics.png"
+            title="People with all six of those names agree that it's weird that
+            we have teeth, when you think about it for too long. Just about
+            everyone agrees on that, except—in a still-unexplained statistical
+            anomaly—people named &amp;quot;Trevor.&amp;quot;" alt="People with
+            all six of those names agree that it's weird that we have teeth,
+            when you think about it for too long. Just about everyone agrees on
+            that, except—in a still-unexplained statistical anomaly—people named
+            &amp;quot;Trevor.&amp;quot;" /&gt;
+        </summary>
+    </entry>
+    <entry>
+        <title>Fruit Collider</title>
+        <link href="https://xkcd.com/1949/" rel="alternate"></link>
+        <updated>2018-01-31T00:00:00Z</updated>
+        <id>https://xkcd.com/1949/</id>
+        <summary type="html">&lt;img
+            src="https://imgs.xkcd.com/comics/fruit_collider.png" title="The
+            most delicious exotic fruit discovered this way is the strawberry
+            banana. Sadly, it's only stable in puree form, so it's currently
+            limited to yogurt and smoothies, but they're building a massive
+            collider in Europe to search for a strawberry banana that can be
+            eaten whole." alt="The most delicious exotic fruit discovered this
+            way is the strawberry banana. Sadly, it's only stable in puree form,
+            so it's currently limited to yogurt and smoothies, but they're
+            building a massive collider in Europe to search for a strawberry
+            banana that can be eaten whole." /&gt;
+        </summary>
+    </entry>
+    <entry>
+        <title>Campaign Fundraising Emails</title>
+        <link href="https://xkcd.com/1948/" rel="alternate"></link>
+        <updated>2018-01-29T00:00:00Z</updated>
+        <id>https://xkcd.com/1948/</id>
+        <summary type="html">&lt;img
+            src="https://imgs.xkcd.com/comics/campaign_fundraising_emails.png"
+            title="The establishment doesn't take us seriously. You know who
+            else they didn't take seriously? Hitler. I'll be like him, but a
+            GOOD guy instead of..." alt="The establishment doesn't take us
+            seriously. You know who else they didn't take seriously? Hitler.
+            I'll be like him, but a GOOD guy instead of..." /&gt;
+        </summary>
+    </entry>
+    <entry>
+        <title>Night Sky</title>
+        <link href="https://xkcd.com/1947/" rel="alternate"></link>
+        <updated>2018-01-26T00:00:00Z</updated>
+        <id>https://xkcd.com/1947/</id>
+        <summary type="html">&lt;img
+            src="https://imgs.xkcd.com/comics/night_sky.png" title="There's a
+            mountain lion nearby, but it didn't notice you because it's reading
+            Facebook." alt="There's a mountain lion nearby, but it didn't notice
+            you because it's reading Facebook." /&gt;
+        </summary>
+    </entry>
+</feed>

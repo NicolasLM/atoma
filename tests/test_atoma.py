@@ -1,8 +1,7 @@
 import pytest
 
 from atoma import (
-    AtomFeed, AtomEntry, AtomTextConstruct, AtomTextType, AtomPerson, AtomLink,
-    parse_atom_file, parse_atom_bytes, AtomParseError
+    AtomFeed, parse_atom_file, parse_atom_bytes, AtomParseError
 )
 
 data = b"""\
@@ -24,11 +23,22 @@ def test_broken_missing_id():
         parse_atom_file('tests/documents/broken-missing-id.xml')
 
 
-def test_broken_missing_author():
-    with pytest.raises(AtomParseError):
-        parse_atom_file('tests/documents/broken-missing-author.xml')
-
-
 def test_broken_missing_author_name():
     with pytest.raises(AtomParseError):
         parse_atom_file('tests/documents/broken-missing-author-name.xml')
+
+
+def test_broken_missing_author():
+    # The RFC mandates that at least one of feed or entries must have an author
+    # but this is rarely the case in practice.
+    parsed = parse_atom_file('tests/documents/broken-xkcd.xml')
+    assert parsed.authors == list()
+    assert parsed.entries[0].authors == list()
+
+
+def test_broken_missing_updated():
+    # The RFC mandates that feed and entries have an updated date
+    # but this is rarely the case in practice.
+    parsed = parse_atom_file('tests/documents/broken-missing-updated.xml')
+    assert parsed.updated is None
+    assert parsed.entries[0].updated is None

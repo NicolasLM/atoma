@@ -22,7 +22,7 @@ class AtomTextType(enum.Enum):
 @attr.s
 class AtomTextConstruct:
     text_type: str = attr.ib()
-    lang: str = attr.ib()
+    lang: Optional[str] = attr.ib()
     value: str = attr.ib()
 
 
@@ -30,7 +30,9 @@ class AtomTextConstruct:
 class AtomEntry:
     title: AtomTextConstruct = attr.ib()
     id_: str = attr.ib()
-    updated: datetime = attr.ib()
+
+    # Should be mandatory but many feeds use published instead
+    updated: Optional[datetime] = attr.ib()
 
     authors: List['AtomPerson'] = attr.ib()
     contributors: List['AtomPerson'] = attr.ib()
@@ -47,7 +49,9 @@ class AtomEntry:
 class AtomFeed:
     title: AtomTextConstruct = attr.ib()
     id_: str = attr.ib()
-    updated: datetime = attr.ib()
+
+    # Should be mandatory but many feeds do not include it
+    updated: Optional[datetime] = attr.ib()
 
     authors: List['AtomPerson'] = attr.ib()
     contributors: List['AtomPerson'] = attr.ib()
@@ -203,7 +207,6 @@ def _get_entry(element: Element,
     # Mandatory
     title = _get_text_construct(root, 'feed:title')
     id_ = _get_text(root, 'feed:id')
-    updated = _get_datetime(root, 'feed:updated')
 
     # Optional
     try:
@@ -218,8 +221,6 @@ def _get_entry(element: Element,
     authors = [_get_person(e)
                for e in root.findall('feed:author', _ns)] or default_authors
     authors = authors or default_authors or source_authors
-    if not authors:
-        raise AtomParseError('Entry "{}" does not have an author')
 
     contributors = (
         [_get_person(e) for e in root.findall('feed:contributor', _ns)]
@@ -227,6 +228,7 @@ def _get_entry(element: Element,
     links = [_get_link(e) for e in root.findall('feed:link', _ns)]
     categories = [_get_category(e) for e in root.findall('feed:category', _ns)]
 
+    updated = _get_datetime(root, 'feed:updated', optional=True)
     published = _get_datetime(root, 'feed:published', optional=True)
     rights = _get_text_construct(root, 'feed:rights', optional=True)
     summary = _get_text_construct(root, 'feed:summary', optional=True)
@@ -252,9 +254,9 @@ def _parse_atom(root: Element, parse_entries: bool=True) -> AtomFeed:
     # Mandatory
     title = _get_text_construct(root, 'feed:title')
     id_ = _get_text(root, 'feed:id')
-    updated = _get_datetime(root, 'feed:updated')
 
     # Optional
+    updated = _get_datetime(root, 'feed:updated', optional=True)
     authors = [_get_person(e)
                for e in root.findall('feed:author', _ns)]
     contributors = [_get_person(e)
