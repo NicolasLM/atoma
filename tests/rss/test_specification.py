@@ -2,7 +2,7 @@ from datetime import datetime
 
 from dateutil.tz import tzutc
 
-from atoma.rss_parser import RSSChannel, RSSItem, parse_rss_file
+from atoma.rss import RSSChannel, RSSItem, parse_rss_file
 
 
 def test_specification():

@@ -1,4 +1,4 @@
-from atoma.rss_parser import (
+from atoma.rss import (
     RSSChannel, RSSItem, RSSEnclosure, RSSSource, RSSImage, parse_rss_file
 )
 

@@ -1,6 +1,6 @@
 import pytest
 
-from atoma.rss_parser import (
+from atoma.rss import (
     parse_rss_file, parse_rss_bytes, RSSChannel, FeedParseError
 )
 

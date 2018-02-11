@@ -1,6 +1,6 @@
 import pytest
 
-from atoma.atom_parser import (
+from atoma.atom import (
     AtomFeed, parse_atom_file, parse_atom_bytes, FeedParseError
 )
 
