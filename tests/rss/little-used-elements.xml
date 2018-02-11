@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<rss version="2.0">
+<rss version="2.0"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+>
 <channel>
     <title>Foo</title>
     <link>http://foo.bar</link>
@@ -25,6 +27,7 @@
         <category>Video</category>
         <enclosure length="24986239" type="audio/mpeg" url="http://dallas.example.com/joebob_050689.mp3" />
         <enclosure length="0" type="application/json" url="http://dallas.example.com/foo.json" />
+        <content:encoded><![CDATA[<p>What a <em>beautiful</em> day!</p>]]></content:encoded>
     </item>
 
 </channel>

@@ -44,3 +44,4 @@ def test_encoding():
     assert parsed.items[1].title == "Nice <gorilla> what's he weigh?"
     assert parsed.items[2].title == "Rïchàrd Plop's ☃"
     assert parsed.items[2].description == cdata_description
+    assert parsed.items[3].description is None

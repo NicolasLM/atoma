@@ -21,7 +21,8 @@ def test_specification():
         enclosures=[],
         guid='http://liftoff.msfc.nasa.gov/2003/06/03.html#item573',
         pub_date=datetime(2003, 6, 3, 9, 39, 21, tzinfo=tzutc()),
-        source=None
+        source=None,
+        content_encoded=None
     )
     item_2 = RSSItem(
         title=None,
@@ -37,7 +38,8 @@ def test_specification():
         enclosures=[],
         guid='http://liftoff.msfc.nasa.gov/2003/05/30.html#item572',
         pub_date=datetime(2003, 5, 30, 11, 6, 42, tzinfo=tzutc()),
-        source=None
+        source=None,
+        content_encoded=None
     )
     item_3 = RSSItem(
         title='The Engine That Does More',
@@ -52,7 +54,8 @@ def test_specification():
         enclosures=[],
         guid='http://liftoff.msfc.nasa.gov/2003/05/27.html#item571',
         pub_date=datetime(2003, 5, 27, 8, 37, 32, tzinfo=tzutc()),
-        source=None
+        source=None,
+        content_encoded=None
     )
     item_4 = RSSItem(
         title="Astronauts' Dirty Laundry",
@@ -67,7 +70,8 @@ def test_specification():
         enclosures=[],
         guid='http://liftoff.msfc.nasa.gov/2003/05/20.html#item570',
         pub_date=datetime(2003, 5, 20, 8, 56, 2, tzinfo=tzutc()),
-        source=None
+        source=None,
+        content_encoded=None
     )
 
     expected = RSSChannel(
@@ -85,6 +89,7 @@ def test_specification():
         docs='http://blogs.law.harvard.edu/tech/rss',
         ttl=None,
         image=None,
-        items=[item_1, item_2, item_3, item_4]
+        items=[item_1, item_2, item_3, item_4],
+        content_encoded=None
     )
     assert parse_rss_file('tests/rss/specification.xml') == expected

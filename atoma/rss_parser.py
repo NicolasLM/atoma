@@ -48,6 +48,9 @@ class RSSItem:
     pub_date: Optional[datetime] = attr.ib()
     source: Optional[RSSSource] = attr.ib()
 
+    # Extension
+    content_encoded: Optional[str] = attr.ib()
+
 
 @attr.s
 class RSSChannel:
@@ -69,10 +72,18 @@ class RSSChannel:
 
     items: List[RSSItem] = attr.ib()
 
+    # Extension
+    content_encoded: Optional[str] = attr.ib()
+
+
+_ns = {
+    'content': 'http://purl.org/rss/1.0/modules/content/'
+}
+
 
 def _get_child(element: Element, name,
                optional: bool=False) -> Optional[Element]:
-    child = element.find(name)
+    child = element.find(name, namespaces=_ns)
 
     if child is None and not optional:
         raise RSSParseError(
@@ -88,7 +99,7 @@ def _get_child(element: Element, name,
 
 def _get_text(element: Element, name, optional: bool=False) -> Optional[str]:
     child = _get_child(element, name, optional)
-    if child is None:
+    if child is None or child.text is None:
         return None
 
     return child.text.strip()
@@ -156,11 +167,12 @@ def _get_item(element: Element) -> RSSItem:
     author = _get_text(root, 'author', optional=True)
     categories = [e.text for e in root.findall('category')]
     comments = _get_text(root, 'comments', optional=True)
-
     enclosure = [_get_enclosure(e) for e in root.findall('enclosure')]
     guid = _get_text(root, 'guid', optional=True)
     pub_date = _get_datetime(root, 'pubDate', optional=True)
     source = _get_source(root, 'source', optional=True)
+
+    content_encoded = _get_text(root, 'content:encoded', optional=True)
 
     return RSSItem(
         title,
@@ -172,7 +184,8 @@ def _get_item(element: Element) -> RSSItem:
         enclosure,
         guid,
         pub_date,
-        source
+        source,
+        content_encoded
     )
 
 
@@ -204,6 +217,8 @@ def _parse_rss(root: Element) -> RSSChannel:
     image = _get_image(root, 'image', optional=True)
     items = [_get_item(e) for e in root.findall('item')]
 
+    content_encoded = _get_text(root, 'content:encoded', optional=True)
+
     return RSSChannel(
         title,
         link,
@@ -219,7 +234,8 @@ def _parse_rss(root: Element) -> RSSChannel:
         docs,
         ttl,
         image,
-        items
+        items,
+        content_encoded
     )
 
 

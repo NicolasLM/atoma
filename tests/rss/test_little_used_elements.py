@@ -27,7 +27,8 @@ def test_little_used_elements():
         source=RSSSource(
             title='Los Angeles Herald-Examiner',
             url='http://la.example.com/rss.xml'
-        )
+        ),
+        content_encoded='<p>What a <em>beautiful</em> day!</p>'
     )
     expected = RSSChannel(
         title='Foo',
@@ -51,6 +52,7 @@ def test_little_used_elements():
             height=32,
             description='Read the Dallas Times-Herald'
         ),
-        items=[item]
+        items=[item],
+        content_encoded=None
     )
     assert parse_rss_file('tests/rss/little-used-elements.xml') == expected
