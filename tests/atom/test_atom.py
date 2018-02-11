@@ -1,7 +1,7 @@
 import pytest
 
-from atoma import (
-    AtomFeed, parse_atom_file, parse_atom_bytes, AtomParseError
+from atoma.atom_parser import (
+    AtomFeed, parse_atom_file, parse_atom_bytes, FeedParseError
 )
 
 data = b"""\
@@ -19,12 +19,12 @@ def test_read_bytes():
 
 
 def test_broken_missing_id():
-    with pytest.raises(AtomParseError):
+    with pytest.raises(FeedParseError):
         parse_atom_file('tests/atom/broken-missing-id.xml')
 
 
 def test_broken_missing_author_name():
-    with pytest.raises(AtomParseError):
+    with pytest.raises(FeedParseError):
         parse_atom_file('tests/atom/broken-missing-author-name.xml')
 
 

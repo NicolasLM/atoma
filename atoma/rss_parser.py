@@ -5,11 +5,8 @@ from xml.etree.ElementTree import Element
 
 import attr
 from defusedxml.ElementTree import parse
-import dateutil.parser
 
-
-class RSSParseError(Exception):
-    """RSS document is invalid."""
+from .utils import get_child, get_text, get_int, get_datetime, FeedParseError
 
 
 @attr.s
@@ -76,71 +73,25 @@ class RSSChannel:
     content_encoded: Optional[str] = attr.ib()
 
 
-_ns = {
-    'content': 'http://purl.org/rss/1.0/modules/content/'
-}
-
-
-def _get_child(element: Element, name,
-               optional: bool=False) -> Optional[Element]:
-    child = element.find(name, namespaces=_ns)
-
-    if child is None and not optional:
-        raise RSSParseError(
-            'Could not parse RSS channel: "{}" required in "{}"'
-            .format(name, element.tag)
-        )
-
-    elif child is None:
-        return None
-
-    return child
-
-
-def _get_text(element: Element, name, optional: bool=False) -> Optional[str]:
-    child = _get_child(element, name, optional)
-    if child is None or child.text is None:
-        return None
-
-    return child.text.strip()
-
-
-def _get_int(element: Element, name, optional: bool=False) -> Optional[int]:
-    text = _get_text(element, name, optional)
-    if text is None:
-        return None
-
-    return int(text)
-
-
-def _get_datetime(element: Element, name,
-                  optional: bool=False) -> Optional[datetime]:
-    child = _get_child(element, name, optional)
-    if child is None:
-        return None
-
-    return dateutil.parser.parse(child.text.strip())
-
-
 def _get_image(element: Element, name,
                optional: bool=False) -> Optional[RSSImage]:
-    child = _get_child(element, name, optional)
+    child = get_child(element, name, optional)
     if child is None:
         return None
 
     return RSSImage(
-        _get_text(child, 'url'),
-        _get_text(child, 'title'),
-        _get_text(child, 'link'),
-        _get_int(child, 'width', optional=True) or 88,
-        _get_int(child, 'height', optional=True) or 31,
-        _get_text(child, 'description', optional=True)
+        get_text(child, 'url'),
+        get_text(child, 'title'),
+        get_text(child, 'link'),
+        get_int(child, 'width', optional=True) or 88,
+        get_int(child, 'height', optional=True) or 31,
+        get_text(child, 'description', optional=True)
     )
 
 
 def _get_source(element: Element, name,
                 optional: bool=False) -> Optional[RSSSource]:
-    child = _get_child(element, name, optional)
+    child = get_child(element, name, optional)
     if child is None:
         return None
 
@@ -161,18 +112,18 @@ def _get_enclosure(element: Element) -> RSSEnclosure:
 def _get_item(element: Element) -> RSSItem:
     root = element
 
-    title = _get_text(root, 'title', optional=True)
-    link = _get_text(root, 'link', optional=True)
-    description = _get_text(root, 'description', optional=True)
-    author = _get_text(root, 'author', optional=True)
+    title = get_text(root, 'title', optional=True)
+    link = get_text(root, 'link', optional=True)
+    description = get_text(root, 'description', optional=True)
+    author = get_text(root, 'author', optional=True)
     categories = [e.text for e in root.findall('category')]
-    comments = _get_text(root, 'comments', optional=True)
+    comments = get_text(root, 'comments', optional=True)
     enclosure = [_get_enclosure(e) for e in root.findall('enclosure')]
-    guid = _get_text(root, 'guid', optional=True)
-    pub_date = _get_datetime(root, 'pubDate', optional=True)
+    guid = get_text(root, 'guid', optional=True)
+    pub_date = get_datetime(root, 'pubDate', optional=True)
     source = _get_source(root, 'source', optional=True)
 
-    content_encoded = _get_text(root, 'content:encoded', optional=True)
+    content_encoded = get_text(root, 'content:encoded', optional=True)
 
     return RSSItem(
         title,
@@ -192,32 +143,32 @@ def _get_item(element: Element) -> RSSItem:
 def _parse_rss(root: Element) -> RSSChannel:
     rss_version = root.get('version')
     if rss_version != '2.0':
-        raise RSSParseError('Cannot process RSS feed version "{}"'
-                            .format(rss_version))
+        raise FeedParseError('Cannot process RSS feed version "{}"'
+                             .format(rss_version))
 
     root = root.find('channel')
 
     # Mandatory
-    title = _get_text(root, 'title')
-    link = _get_text(root, 'link')
-    description = _get_text(root, 'description')
+    title = get_text(root, 'title')
+    link = get_text(root, 'link')
+    description = get_text(root, 'description')
 
     # Optional
-    language = _get_text(root, 'language', optional=True)
-    copyright = _get_text(root, 'copyright', optional=True)
-    managing_editor = _get_text(root, 'managingEditor', optional=True)
-    web_master = _get_text(root, 'webMaster', optional=True)
-    pub_date = _get_datetime(root, 'pubDate', optional=True)
-    last_build_date = _get_datetime(root, 'lastBuildDate', optional=True)
+    language = get_text(root, 'language', optional=True)
+    copyright = get_text(root, 'copyright', optional=True)
+    managing_editor = get_text(root, 'managingEditor', optional=True)
+    web_master = get_text(root, 'webMaster', optional=True)
+    pub_date = get_datetime(root, 'pubDate', optional=True)
+    last_build_date = get_datetime(root, 'lastBuildDate', optional=True)
     categories = [e.text for e in root.findall('category')]
-    generator = _get_text(root, 'generator', optional=True)
-    docs = _get_text(root, 'docs', optional=True)
-    ttl = _get_int(root, 'ttl', optional=True)
+    generator = get_text(root, 'generator', optional=True)
+    docs = get_text(root, 'docs', optional=True)
+    ttl = get_int(root, 'ttl', optional=True)
 
     image = _get_image(root, 'image', optional=True)
     items = [_get_item(e) for e in root.findall('item')]
 
-    content_encoded = _get_text(root, 'content:encoded', optional=True)
+    content_encoded = get_text(root, 'content:encoded', optional=True)
 
     return RSSChannel(
         title,

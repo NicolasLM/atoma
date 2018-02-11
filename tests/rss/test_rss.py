@@ -1,7 +1,7 @@
 import pytest
 
 from atoma.rss_parser import (
-    parse_rss_file, parse_rss_bytes, RSSChannel, RSSParseError
+    parse_rss_file, parse_rss_bytes, RSSChannel, FeedParseError
 )
 
 data = b"""\
@@ -29,12 +29,12 @@ def test_read_bytes():
 
 
 def test_broken_missing_title():
-    with pytest.raises(RSSParseError):
+    with pytest.raises(FeedParseError):
         parse_rss_file('tests/rss/broken-missing-title.xml')
 
 
 def test_broken_version():
-    with pytest.raises(RSSParseError):
+    with pytest.raises(FeedParseError):
         parse_rss_file('tests/rss/broken-version.xml')
 
 

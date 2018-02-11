@@ -6,11 +6,8 @@ from xml.etree.ElementTree import Element
 
 import attr
 from defusedxml.ElementTree import parse
-import dateutil.parser
 
-
-class AtomParseError(Exception):
-    """Atom document is invalid."""
+from .utils import get_child, get_text, get_datetime, FeedParseError, ns
 
 
 class AtomTextType(enum.Enum):
@@ -97,47 +94,9 @@ class AtomGenerator:
     version: Optional[str] = attr.ib()
 
 
-_ns = {
-    'feed': 'http://www.w3.org/2005/Atom'
-}
-
-
-def _get_child(element: Element, name,
-               optional: bool=False) -> Optional[Element]:
-    child = element.find(name, _ns)
-
-    if child is None and not optional:
-        raise AtomParseError(
-            'Could not parse Atom feed: "{}" required in "{}"'
-            .format(name, element.tag)
-        )
-
-    elif child is None:
-        return None
-
-    return child
-
-
-def _get_text(element: Element, name, optional: bool=False) -> Optional[str]:
-    child = _get_child(element, name, optional)
-    if child is None:
-        return None
-
-    return child.text.strip()
-
-
-def _get_datetime(element: Element, name,
-                  optional: bool=False) -> Optional[datetime]:
-    child = _get_child(element, name, optional)
-    if child is None:
-        return None
-
-    return dateutil.parser.parse(child.text.strip())
-
-
 def _get_generator(element: Element, name,
                    optional: bool=False) -> Optional[AtomGenerator]:
-    child = _get_child(element, name, optional)
+    child = get_child(element, name, optional)
     if child is None:
         return None
 
@@ -150,7 +109,7 @@ def _get_generator(element: Element, name,
 
 def _get_text_construct(element: Element, name,
                         optional: bool=False) -> Optional[AtomTextConstruct]:
-    child = _get_child(element, name, optional)
+    child = get_child(element, name, optional)
     if child is None:
         return None
 
@@ -173,9 +132,9 @@ def _get_text_construct(element: Element, name,
 
 def _get_person(element: Element) -> AtomPerson:
     return AtomPerson(
-        _get_text(element, 'feed:name'),
-        _get_text(element, 'feed:uri', optional=True),
-        _get_text(element, 'feed:email', optional=True)
+        get_text(element, 'feed:name'),
+        get_text(element, 'feed:uri', optional=True),
+        get_text(element, 'feed:email', optional=True)
     )
 
 
@@ -206,30 +165,30 @@ def _get_entry(element: Element,
 
     # Mandatory
     title = _get_text_construct(root, 'feed:title')
-    id_ = _get_text(root, 'feed:id')
+    id_ = get_text(root, 'feed:id')
 
     # Optional
     try:
-        source = _parse_atom(_get_child(root, 'feed:source'),
+        source = _parse_atom(get_child(root, 'feed:source'),
                              parse_entries=False)
-    except AtomParseError:
+    except FeedParseError:
         source = None
         source_authors = []
     else:
         source_authors = source.authors
 
     authors = [_get_person(e)
-               for e in root.findall('feed:author', _ns)] or default_authors
+               for e in root.findall('feed:author', ns)] or default_authors
     authors = authors or default_authors or source_authors
 
     contributors = (
-        [_get_person(e) for e in root.findall('feed:contributor', _ns)]
+        [_get_person(e) for e in root.findall('feed:contributor', ns)]
     )
-    links = [_get_link(e) for e in root.findall('feed:link', _ns)]
-    categories = [_get_category(e) for e in root.findall('feed:category', _ns)]
+    links = [_get_link(e) for e in root.findall('feed:link', ns)]
+    categories = [_get_category(e) for e in root.findall('feed:category', ns)]
 
-    updated = _get_datetime(root, 'feed:updated', optional=True)
-    published = _get_datetime(root, 'feed:published', optional=True)
+    updated = get_datetime(root, 'feed:updated', optional=True)
+    published = get_datetime(root, 'feed:published', optional=True)
     rights = _get_text_construct(root, 'feed:rights', optional=True)
     summary = _get_text_construct(root, 'feed:summary', optional=True)
     content = _get_text_construct(root, 'feed:content', optional=True)
@@ -253,28 +212,28 @@ def _get_entry(element: Element,
 def _parse_atom(root: Element, parse_entries: bool=True) -> AtomFeed:
     # Mandatory
     title = _get_text_construct(root, 'feed:title')
-    id_ = _get_text(root, 'feed:id')
+    id_ = get_text(root, 'feed:id')
 
     # Optional
-    updated = _get_datetime(root, 'feed:updated', optional=True)
+    updated = get_datetime(root, 'feed:updated', optional=True)
     authors = [_get_person(e)
-               for e in root.findall('feed:author', _ns)]
+               for e in root.findall('feed:author', ns)]
     contributors = [_get_person(e)
-                    for e in root.findall('feed:contributor', _ns)]
+                    for e in root.findall('feed:contributor', ns)]
     links = [_get_link(e)
-             for e in root.findall('feed:link', _ns)]
+             for e in root.findall('feed:link', ns)]
     categories = [_get_category(e)
-                  for e in root.findall('feed:category', _ns)]
+                  for e in root.findall('feed:category', ns)]
 
     generator = _get_generator(root, 'feed:generator', optional=True)
     subtitle = _get_text_construct(root, 'feed:subtitle', optional=True)
     rights = _get_text_construct(root, 'feed:rights', optional=True)
-    icon = _get_text(root, 'feed:icon', optional=True)
-    logo = _get_text(root, 'feed:logo', optional=True)
+    icon = get_text(root, 'feed:icon', optional=True)
+    logo = get_text(root, 'feed:logo', optional=True)
 
     if parse_entries:
         entries = [_get_entry(e, authors)
-                   for e in root.findall('feed:entry', _ns)]
+                   for e in root.findall('feed:entry', ns)]
     else:
         entries = []
 

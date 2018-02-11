@@ -2,7 +2,7 @@ import datetime
 
 from dateutil.tz import tzutc, tzoffset
 
-from atoma import (
+from atoma.atom_parser import (
     AtomFeed, AtomEntry, AtomTextConstruct, AtomTextType, AtomPerson, AtomLink,
     AtomGenerator, parse_atom_file
 )
