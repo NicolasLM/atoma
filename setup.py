@@ -18,7 +18,7 @@ with open(path.join(here, 'atoma', 'const.py'), encoding='utf-8') as fp:
 setup(
     name='atoma',
     version=version,
-    description='Atom feed parser for Python 3',
+    description='Atom and RSS feed parser for Python 3',
     long_description=long_description,
     url='https://github.com/NicolasLM/atoma',
     author='Nicolas Le Manchet',
@@ -36,7 +36,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Topic :: Text Processing :: Markup :: XML'
     ],
-    keywords='atom feed feeds syndication parser RFC4287',
+    keywords='atom rss feed feeds syndication parser RFC4287',
 
     packages=find_packages(include=('atoma', 'atoma.*')),
     install_requires=[

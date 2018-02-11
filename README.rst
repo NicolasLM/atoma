@@ -6,7 +6,7 @@ Atoma
 .. image:: https://coveralls.io/repos/github/NicolasLM/atoma/badge.svg?branch=master
     :target: https://coveralls.io/github/NicolasLM/atoma?branch=master
 
-Atom feed parser for Python 3.
+Atom and RSS feed parser for Python 3.
 
 Quickstart
 ----------
@@ -20,10 +20,10 @@ Load and parse an Atom XML file:
 .. code:: python
 
     >>> import atoma
-    >>> feed = atoma.parse_atom_file('atom-feed.xml')
-    >>> feed.authors
-    [AtomPerson(name='Richard Plop', uri=None, email='richard@plop.org')]
-    >>> len(feed.entries)
+    >>> feed = atoma.parse_rss_file('rss-feed.xml')
+    >>> feed.description
+    'The blog relating the daily life of web agency developers'
+    >>> len(feed.items)
     5
 
 Parsing feeds from the Internet is easy as well:
@@ -39,8 +39,9 @@ Parsing feeds from the Internet is easy as well:
 Features
 --------
 
+* RSS 2.0 - `RSS 2.0 Specification <http://cyber.harvard.edu/rss/rss.html>`_
 * Atom Syndication Format v1 - `RFC4287 <https://tools.ietf.org/html/rfc4287>`_
-* Typed: atom feed decomposed into meaningful Python objects
+* Typed: feeds decomposed into meaningful Python objects
 * Secure: uses defusedxml to load untrusted feeds
 * Compatible with Python 3.6+
 
@@ -55,20 +56,24 @@ to clean the HTML contained in the feeds to prevent `Cross-site scripting (XSS)
 Useful Resources
 ----------------
 
-To use this library a basic understanding of Atom feeds is required. The
+To use this library a basic understanding of feeds is required. For Atom, the
 `Introduction to Atom <https://validator.w3.org/feed/docs/atom.html>`_ is a must
 read. The `RFC 4287 <https://tools.ietf.org/html/rfc4287>`_ can help lift some
 ambiguities. Finally the `feed validator <https://validator.w3.org/feed/>`_ is
 great to test hand-crafted feeds.
 
-Non-implemented Atom Features
------------------------------
+For RSS, the `specification <http://cyber.harvard.edu/rss/rss.html>`_ and
+`rssboard.org <http://www.rssboard.org>`_ have a ton of information and
+examples.
 
-Some seldom used Atom features are not implemented:
+Non-implemented Features
+------------------------
+
+Some seldom used features are not implemented:
 
 * XML signature and encryption
-* Atom Extensions
-* Content other than `text`, `html` and `xhtml`
+* Atom and most RSS extensions
+* Atom content other than `text`, `html` and `xhtml`
 
 License
 -------
