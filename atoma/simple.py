@@ -33,8 +33,10 @@ def _adapt_atom_feed(atom_feed: atom.AtomFeed) -> Feed:
     for entry in atom_feed.entries:
         if entry.content is not None:
             content = entry.content.value
-        else:
+        elif entry.summary is not None:
             content = entry.summary.value
+        else:
+            content = ''
         published_at, updated_at = _get_article_dates(entry.published,
                                                       entry.updated)
         articles.append(Article(
