@@ -67,7 +67,7 @@ def _adapt_rss_channel(rss_channel: rss.RSSChannel) -> Feed:
             item.guid or item.link,
             item.title,
             item.link,
-            item.content_encoded or item.description,
+            item.content_encoded or item.description or '',
             item.pub_date,
             None
         ))
