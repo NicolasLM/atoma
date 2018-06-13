@@ -33,8 +33,17 @@ def get_child(element: Element, name,
 
 def get_text(element: Element, name, optional: bool=False) -> Optional[str]:
     child = get_child(element, name, optional)
-    if child is None or child.text is None:
+    if child is None:
         return None
+
+    if child.text is None:
+        if optional:
+            return None
+
+        raise FeedParseError(
+            'Could not parse feed: "{}" text is required but is empty'
+            .format(name)
+        )
 
     return child.text.strip()
 

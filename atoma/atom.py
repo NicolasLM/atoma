@@ -123,6 +123,15 @@ def _get_text_construct(element: Element, name,
     except AttributeError:
         lang = None
 
+    if child.text is None:
+        if optional:
+            return None
+
+        raise FeedParseError(
+            'Could not parse atom feed: "{}" text is required but is empty'
+            .format(name)
+        )
+
     return AtomTextConstruct(
         text_type,
         lang,
