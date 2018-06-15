@@ -8,7 +8,7 @@ install:
 
 script:
     - pytest -v --cov=atoma tests/
-    - pycodestyle atoma tests
+    - pycodestyle --ignore=E252 atoma tests
 
 after_success:
   - coveralls

@@ -41,6 +41,7 @@ Features
 
 * RSS 2.0 - `RSS 2.0 Specification <http://cyber.harvard.edu/rss/rss.html>`_
 * Atom Syndication Format v1 - `RFC4287 <https://tools.ietf.org/html/rfc4287>`_
+* OPML 2.0, to share lists of feeds - `OPML 2.0 <http://dev.opml.org/spec2.html>`_
 * Typed: feeds decomposed into meaningful Python objects
 * Secure: uses defusedxml to load untrusted feeds
 * Compatible with Python 3.6+
@@ -66,13 +67,17 @@ For RSS, the `specification <http://cyber.harvard.edu/rss/rss.html>`_ and
 `rssboard.org <http://www.rssboard.org>`_ have a ton of information and
 examples.
 
+For OPML, the `specification
+<http://dev.opml.org/spec2.html#subscriptionLists>`_ has a paragraph dedicated
+to its usage for syndication
+
 Non-implemented Features
 ------------------------
 
 Some seldom used features are not implemented:
 
 * XML signature and encryption
-* Atom and most RSS extensions
+* Some Atom and RSS extensions
 * Atom content other than `text`, `html` and `xhtml`
 
 License
