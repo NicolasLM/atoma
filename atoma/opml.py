@@ -65,17 +65,17 @@ def _parse_opml(root: Element) -> OPML:
     body = root.find('body')
 
     return OPML(
-        get_text(head, 'title', optional=True),
-        get_text(head, 'ownerName', optional=True),
-        get_text(head, 'ownerEmail', optional=True),
-        get_datetime(head, 'dateCreated', optional=True),
-        get_datetime(head, 'dateModified', optional=True),
-        get_text(head, 'expansionState', optional=True),
-        get_int(head, 'vertScrollState', optional=True),
-        get_int(head, 'windowTop', optional=True),
-        get_int(head, 'windowLeft', optional=True),
-        get_int(head, 'windowBottom', optional=True),
-        get_int(head, 'windowRight', optional=True),
+        get_text(head, 'title'),
+        get_text(head, 'ownerName'),
+        get_text(head, 'ownerEmail'),
+        get_datetime(head, 'dateCreated'),
+        get_datetime(head, 'dateModified'),
+        get_text(head, 'expansionState'),
+        get_int(head, 'vertScrollState'),
+        get_int(head, 'windowTop'),
+        get_int(head, 'windowLeft'),
+        get_int(head, 'windowBottom'),
+        get_int(head, 'windowRight'),
         outlines=_get_outlines(body)
     )
 

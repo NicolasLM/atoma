@@ -74,23 +74,23 @@ class RSSChannel:
 
 
 def _get_image(element: Element, name,
-               optional: bool=False) -> Optional[RSSImage]:
+               optional: bool=True) -> Optional[RSSImage]:
     child = get_child(element, name, optional)
     if child is None:
         return None
 
     return RSSImage(
-        get_text(child, 'url'),
-        get_text(child, 'title'),
-        get_text(child, 'link'),
-        get_int(child, 'width', optional=True) or 88,
-        get_int(child, 'height', optional=True) or 31,
-        get_text(child, 'description', optional=True)
+        get_text(child, 'url', optional=False),
+        get_text(child, 'title', optional=False),
+        get_text(child, 'link', optional=False),
+        get_int(child, 'width') or 88,
+        get_int(child, 'height') or 31,
+        get_text(child, 'description')
     )
 
 
 def _get_source(element: Element, name,
-                optional: bool=False) -> Optional[RSSSource]:
+                optional: bool=True) -> Optional[RSSSource]:
     child = get_child(element, name, optional)
     if child is None:
         return None
@@ -112,18 +112,18 @@ def _get_enclosure(element: Element) -> RSSEnclosure:
 def _get_item(element: Element) -> RSSItem:
     root = element
 
-    title = get_text(root, 'title', optional=True)
-    link = get_text(root, 'link', optional=True)
-    description = get_text(root, 'description', optional=True)
-    author = get_text(root, 'author', optional=True)
+    title = get_text(root, 'title')
+    link = get_text(root, 'link')
+    description = get_text(root, 'description')
+    author = get_text(root, 'author')
     categories = [e.text for e in root.findall('category')]
-    comments = get_text(root, 'comments', optional=True)
+    comments = get_text(root, 'comments')
     enclosure = [_get_enclosure(e) for e in root.findall('enclosure')]
-    guid = get_text(root, 'guid', optional=True)
-    pub_date = get_datetime(root, 'pubDate', optional=True)
-    source = _get_source(root, 'source', optional=True)
+    guid = get_text(root, 'guid')
+    pub_date = get_datetime(root, 'pubDate')
+    source = _get_source(root, 'source')
 
-    content_encoded = get_text(root, 'content:encoded', optional=True)
+    content_encoded = get_text(root, 'content:encoded')
 
     return RSSItem(
         title,
@@ -149,26 +149,26 @@ def _parse_rss(root: Element) -> RSSChannel:
     root = root.find('channel')
 
     # Mandatory
-    title = get_text(root, 'title')
-    link = get_text(root, 'link')
-    description = get_text(root, 'description')
+    title = get_text(root, 'title', optional=False)
+    link = get_text(root, 'link', optional=False)
+    description = get_text(root, 'description', optional=False)
 
     # Optional
-    language = get_text(root, 'language', optional=True)
-    copyright = get_text(root, 'copyright', optional=True)
-    managing_editor = get_text(root, 'managingEditor', optional=True)
-    web_master = get_text(root, 'webMaster', optional=True)
-    pub_date = get_datetime(root, 'pubDate', optional=True)
-    last_build_date = get_datetime(root, 'lastBuildDate', optional=True)
+    language = get_text(root, 'language')
+    copyright = get_text(root, 'copyright')
+    managing_editor = get_text(root, 'managingEditor')
+    web_master = get_text(root, 'webMaster')
+    pub_date = get_datetime(root, 'pubDate')
+    last_build_date = get_datetime(root, 'lastBuildDate')
     categories = [e.text for e in root.findall('category')]
-    generator = get_text(root, 'generator', optional=True)
-    docs = get_text(root, 'docs', optional=True)
-    ttl = get_int(root, 'ttl', optional=True)
+    generator = get_text(root, 'generator')
+    docs = get_text(root, 'docs')
+    ttl = get_int(root, 'ttl')
 
-    image = _get_image(root, 'image', optional=True)
+    image = _get_image(root, 'image')
     items = [_get_item(e) for e in root.findall('item')]
 
-    content_encoded = get_text(root, 'content:encoded', optional=True)
+    content_encoded = get_text(root, 'content:encoded')
 
     return RSSChannel(
         title,
