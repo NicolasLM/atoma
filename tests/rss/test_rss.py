@@ -33,6 +33,12 @@ def test_broken_missing_title():
         parse_rss_file('tests/rss/broken-missing-title.xml')
 
 
+def test_broken_missing_description():
+    # RSS feed description is mandatory by specs, but some feeds in the wild
+    # do not provide it
+    parse_rss_file('tests/rss/broken-missing-description.xml')
+
+
 def test_broken_version():
     with pytest.raises(FeedParseError):
         parse_rss_file('tests/rss/broken-version.xml')

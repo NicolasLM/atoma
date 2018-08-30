@@ -53,8 +53,8 @@ class RSSItem:
 class RSSChannel:
     title: str = attr.ib()
     link: str = attr.ib()
-    description: str = attr.ib()
 
+    description: Optional[str] = attr.ib()
     language: Optional[str] = attr.ib()
     copyright: Optional[str] = attr.ib()
     managing_editor: Optional[str] = attr.ib()
@@ -151,9 +151,9 @@ def _parse_rss(root: Element) -> RSSChannel:
     # Mandatory
     title = get_text(root, 'title', optional=False)
     link = get_text(root, 'link', optional=False)
-    description = get_text(root, 'description', optional=False)
 
     # Optional
+    description = get_text(root, 'description')
     language = get_text(root, 'language')
     copyright = get_text(root, 'copyright')
     managing_editor = get_text(root, 'managingEditor')
