@@ -5,3 +5,4 @@ build
 dist
 atoma.egg-info
 .coverage
+.pytest_cache
