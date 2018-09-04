@@ -3,7 +3,7 @@ from xml.etree.ElementTree import Element
 from typing import Optional
 
 import dateutil.parser
-from defusedxml.ElementTree import parse as defused_xml_parse
+from defusedxml.ElementTree import parse as defused_xml_parse, ParseError
 
 
 ns = {
@@ -23,7 +23,7 @@ class FeedXMLError(Exception):
 def parse_xml(xml_content):
     try:
         return defused_xml_parse(xml_content)
-    except Exception:
+    except ParseError:
         raise FeedXMLError('Not a valid XML document')
 
 
