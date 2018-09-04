@@ -1,4 +1,4 @@
-from .utils import FeedParseError
+from .utils import FeedParseError, FeedXMLError
 from .atom import parse_atom_file, parse_atom_bytes
 from .rss import parse_rss_file, parse_rss_bytes
 from .opml import parse_opml_file, parse_opml_bytes

@@ -3,6 +3,7 @@ from xml.etree.ElementTree import Element
 from typing import Optional
 
 import dateutil.parser
+from defusedxml.ElementTree import parse as defused_xml_parse
 
 
 ns = {
@@ -13,6 +14,17 @@ ns = {
 
 class FeedParseError(Exception):
     """Document is an invalid feed."""
+
+
+class FeedXMLError(Exception):
+    """Document is not valid XML."""
+
+
+def parse_xml(xml_content):
+    try:
+        return defused_xml_parse(xml_content)
+    except Exception:
+        raise FeedXMLError('Not a valid XML document')
 
 
 def get_child(element: Element, name,

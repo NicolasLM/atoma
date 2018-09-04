@@ -5,9 +5,10 @@ from typing import Optional, List
 from xml.etree.ElementTree import Element
 
 import attr
-from defusedxml.ElementTree import parse
 
-from .utils import get_child, get_text, get_datetime, FeedParseError, ns
+from .utils import (
+    parse_xml, get_child, get_text, get_datetime, FeedParseError, ns
+)
 
 
 class AtomTextType(enum.Enum):
@@ -266,11 +267,11 @@ def _parse_atom(root: Element, parse_entries: bool=True) -> AtomFeed:
 
 def parse_atom_file(filename: str) -> AtomFeed:
     """Parse an Atom feed from a local XML file."""
-    root = parse(filename).getroot()
+    root = parse_xml(filename).getroot()
     return _parse_atom(root)
 
 
 def parse_atom_bytes(data: bytes) -> AtomFeed:
     """Parse an Atom feed from a byte-string containing XML data."""
-    root = parse(BytesIO(data)).getroot()
+    root = parse_xml(BytesIO(data)).getroot()
     return _parse_atom(root)

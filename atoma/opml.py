@@ -6,7 +6,7 @@ from xml.etree.ElementTree import Element
 import attr
 from defusedxml.ElementTree import parse
 
-from .utils import get_text, get_int, get_datetime
+from .utils import parse_xml, get_text, get_int, get_datetime
 
 
 @attr.s
@@ -82,13 +82,13 @@ def _parse_opml(root: Element) -> OPML:
 
 def parse_opml_file(filename: str) -> OPML:
     """Parse an OPML document from a local XML file."""
-    root = parse(filename).getroot()
+    root = parse_xml(filename).getroot()
     return _parse_opml(root)
 
 
 def parse_opml_bytes(data: bytes) -> OPML:
     """Parse an OPML document from a byte-string containing XML data."""
-    root = parse(BytesIO(data)).getroot()
+    root = parse_xml(BytesIO(data)).getroot()
     return _parse_opml(root)
 
 

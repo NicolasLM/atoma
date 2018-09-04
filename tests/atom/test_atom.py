@@ -3,6 +3,7 @@ import pytest
 from atoma.atom import (
     AtomFeed, parse_atom_file, parse_atom_bytes, FeedParseError
 )
+from atoma import FeedXMLError
 
 data = b"""\
 <?xml version="1.0" encoding="utf-8"?>
@@ -55,3 +56,8 @@ def test_broken_empty_texts():
         parse_atom_file('tests/atom/broken-empty-title.xml')
     with pytest.raises(FeedParseError):
         parse_atom_file('tests/atom/broken-empty-id.xml')
+
+
+def test_broken_not_xml():
+    with pytest.raises(FeedXMLError):
+        parse_atom_bytes(b'This is not an XML document')

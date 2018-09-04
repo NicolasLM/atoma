@@ -1,10 +1,12 @@
 from datetime import datetime
 
 from dateutil.tz import tzutc
+import pytest
 
 from atoma.opml import (
     parse_opml_file, parse_opml_bytes, get_feed_list, OPML, OPMLOutline
 )
+from atoma import FeedXMLError
 
 data = b"""\
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -75,3 +77,8 @@ def test_subscription_list():
         ]
     )
     assert parse_opml_file('tests/opml/subscription-list.xml') == expected
+
+
+def test_broken_not_xml():
+    with pytest.raises(FeedXMLError):
+        parse_opml_bytes(b'This is not an XML document')

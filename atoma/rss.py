@@ -4,9 +4,10 @@ from typing import Optional, List
 from xml.etree.ElementTree import Element
 
 import attr
-from defusedxml.ElementTree import parse
 
-from .utils import get_child, get_text, get_int, get_datetime, FeedParseError
+from .utils import (
+    parse_xml, get_child, get_text, get_int, get_datetime, FeedParseError
+)
 
 
 @attr.s
@@ -192,11 +193,11 @@ def _parse_rss(root: Element) -> RSSChannel:
 
 def parse_rss_file(filename: str) -> RSSChannel:
     """Parse an RSS feed from a local XML file."""
-    root = parse(filename).getroot()
+    root = parse_xml(filename).getroot()
     return _parse_rss(root)
 
 
 def parse_rss_bytes(data: bytes) -> RSSChannel:
     """Parse an RSS feed from a byte-string containing XML data."""
-    root = parse(BytesIO(data)).getroot()
+    root = parse_xml(BytesIO(data)).getroot()
     return _parse_rss(root)

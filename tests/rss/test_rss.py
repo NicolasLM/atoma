@@ -3,6 +3,7 @@ import pytest
 from atoma.rss import (
     parse_rss_file, parse_rss_bytes, RSSChannel, FeedParseError
 )
+from atoma import FeedXMLError
 
 data = b"""\
 <?xml version="1.0"?>
@@ -42,6 +43,11 @@ def test_broken_missing_description():
 def test_broken_version():
     with pytest.raises(FeedParseError):
         parse_rss_file('tests/rss/broken-version.xml')
+
+
+def test_broken_not_xml():
+    with pytest.raises(FeedXMLError):
+        parse_rss_bytes(b'This is not an XML document')
 
 
 def test_encoding():
