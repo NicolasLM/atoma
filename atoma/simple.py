@@ -72,7 +72,7 @@ def _adapt_rss_channel(rss_channel: rss.RSSChannel) -> Feed:
             None
         ))
     return Feed(
-        rss_channel.title,
+        rss_channel.title if rss_channel.title else rss_channel.link,
         rss_channel.description,
         rss_channel.link,
         rss_channel.pub_date,

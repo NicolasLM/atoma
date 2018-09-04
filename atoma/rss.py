@@ -13,7 +13,7 @@ from .utils import (
 @attr.s
 class RSSImage:
     url: str = attr.ib()
-    title: str = attr.ib()
+    title: Optional[str] = attr.ib()
     link: str = attr.ib()
     width: int = attr.ib()
     height: int = attr.ib()
@@ -52,7 +52,7 @@ class RSSItem:
 
 @attr.s
 class RSSChannel:
-    title: str = attr.ib()
+    title: Optional[str] = attr.ib()
     link: str = attr.ib()
 
     description: Optional[str] = attr.ib()
@@ -82,7 +82,7 @@ def _get_image(element: Element, name,
 
     return RSSImage(
         get_text(child, 'url', optional=False),
-        get_text(child, 'title', optional=False),
+        get_text(child, 'title'),
         get_text(child, 'link', optional=False),
         get_int(child, 'width') or 88,
         get_int(child, 'height') or 31,
@@ -149,8 +149,7 @@ def _parse_rss(root: Element) -> RSSChannel:
 
     root = root.find('channel')
 
-    # Mandatory
-    title = get_text(root, 'title', optional=False)
+    title = get_text(root, 'title')
     link = get_text(root, 'link', optional=False)
 
     # Optional

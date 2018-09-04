@@ -30,14 +30,17 @@ def test_read_bytes():
 
 
 def test_broken_missing_title():
-    with pytest.raises(FeedParseError):
-        parse_rss_file('tests/rss/broken-missing-title.xml')
+    # RSS feed title is mandatory by specs, but some feeds in the wild
+    # do not provide it
+    p = parse_rss_file('tests/rss/broken-missing-title.xml')
+    assert p.title is None
 
 
 def test_broken_missing_description():
     # RSS feed description is mandatory by specs, but some feeds in the wild
     # do not provide it
-    parse_rss_file('tests/rss/broken-missing-description.xml')
+    p = parse_rss_file('tests/rss/broken-missing-description.xml')
+    assert p.description is None
 
 
 def test_broken_version():
