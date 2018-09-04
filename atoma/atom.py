@@ -45,7 +45,7 @@ class AtomEntry:
 
 @attr.s
 class AtomFeed:
-    title: AtomTextConstruct = attr.ib()
+    title: Optional[AtomTextConstruct] = attr.ib()
     id_: str = attr.ib()
 
     # Should be mandatory but many feeds do not include it
@@ -191,9 +191,9 @@ def _get_entry(element: Element,
                for e in root.findall('feed:author', ns)] or default_authors
     authors = authors or default_authors or source_authors
 
-    contributors = (
-        [_get_person(e) for e in root.findall('feed:contributor', ns)]
-    )
+    contributors = [_get_person(e)
+                    for e in root.findall('feed:contributor', ns) if e]
+
     links = [_get_link(e) for e in root.findall('feed:link', ns)]
     categories = [_get_category(e) for e in root.findall('feed:category', ns)]
 
@@ -221,15 +221,15 @@ def _get_entry(element: Element,
 
 def _parse_atom(root: Element, parse_entries: bool=True) -> AtomFeed:
     # Mandatory
-    title = _get_text_construct(root, 'feed:title', optional=False)
     id_ = get_text(root, 'feed:id', optional=False)
 
     # Optional
+    title = _get_text_construct(root, 'feed:title')
     updated = get_datetime(root, 'feed:updated')
     authors = [_get_person(e)
-               for e in root.findall('feed:author', ns)]
+               for e in root.findall('feed:author', ns) if e]
     contributors = [_get_person(e)
-                    for e in root.findall('feed:contributor', ns)]
+                    for e in root.findall('feed:contributor', ns) if e]
     links = [_get_link(e)
              for e in root.findall('feed:link', ns)]
     categories = [_get_category(e)

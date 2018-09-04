@@ -70,8 +70,8 @@ def get_int(element: Element, name, optional: bool=True) -> Optional[int]:
 
 def get_datetime(element: Element, name,
                  optional: bool=True) -> Optional[datetime]:
-    child = get_child(element, name, optional)
-    if child is None:
+    text = get_text(element, name, optional)
+    if text is None:
         return None
 
-    return dateutil.parser.parse(child.text.strip())
+    return dateutil.parser.parse(text)

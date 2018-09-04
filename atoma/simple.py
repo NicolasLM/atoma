@@ -52,7 +52,7 @@ def _adapt_atom_feed(atom_feed: atom.AtomFeed) -> Feed:
     except IndexError:
         link = None
     return Feed(
-        atom_feed.title.value,
+        atom_feed.title.value if atom_feed.title else atom_feed.id_,
         atom_feed.subtitle.value if atom_feed.subtitle else None,
         link,
         atom_feed.updated,
