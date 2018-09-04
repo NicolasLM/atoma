@@ -43,6 +43,13 @@ def test_broken_missing_description():
     assert p.description is None
 
 
+def test_broken_missing_link():
+    # RSS feed link is mandatory by specs, but some feeds in the wild
+    # do not provide it
+    p = parse_rss_file('tests/rss/broken-missing-link.xml')
+    assert p.link is None
+
+
 def test_broken_version():
     with pytest.raises(FeedParseError):
         parse_rss_file('tests/rss/broken-version.xml')

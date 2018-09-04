@@ -53,8 +53,7 @@ class RSSItem:
 @attr.s
 class RSSChannel:
     title: Optional[str] = attr.ib()
-    link: str = attr.ib()
-
+    link: Optional[str] = attr.ib()
     description: Optional[str] = attr.ib()
     language: Optional[str] = attr.ib()
     copyright: Optional[str] = attr.ib()
@@ -150,9 +149,7 @@ def _parse_rss(root: Element) -> RSSChannel:
     root = root.find('channel')
 
     title = get_text(root, 'title')
-    link = get_text(root, 'link', optional=False)
-
-    # Optional
+    link = get_text(root, 'link')
     description = get_text(root, 'description')
     language = get_text(root, 'language')
     copyright = get_text(root, 'copyright')

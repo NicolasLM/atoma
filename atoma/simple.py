@@ -23,7 +23,7 @@ class Article:
 class Feed:
     title: str = attr.ib()
     subtitle: Optional[str] = attr.ib()
-    link: str = attr.ib()
+    link: Optional[str] = attr.ib()
     updated_at: Optional[datetime] = attr.ib()
     articles: List[Article] = attr.ib()
 
@@ -47,10 +47,12 @@ def _adapt_atom_feed(atom_feed: atom.AtomFeed) -> Feed:
             published_at,
             updated_at
         ))
+
     try:
         link = atom_feed.links[0].href
     except IndexError:
         link = None
+
     return Feed(
         atom_feed.title.value if atom_feed.title else atom_feed.id_,
         atom_feed.subtitle.value if atom_feed.subtitle else None,
@@ -71,6 +73,10 @@ def _adapt_rss_channel(rss_channel: rss.RSSChannel) -> Feed:
             item.pub_date,
             None
         ))
+
+    if rss_channel.title is None and rss_channel.link is None:
+        raise FeedParseError('RSS feed does not have a title nor a link')
+
     return Feed(
         rss_channel.title if rss_channel.title else rss_channel.link,
         rss_channel.description,
