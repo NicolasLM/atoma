@@ -58,6 +58,15 @@ def test_broken_missing_source_url():
     assert p.items[0].source.url is None
 
 
+def test_broken_enclosure():
+    # The length and type of an enclosure are mandatory by specs,
+    # but some feeds in the wild do not provide them
+    p = parse_rss_file('tests/rss/broken-enclosure.xml')
+    assert p.items[0].enclosures[0].url == 'https://foo.com/test.mp3'
+    assert p.items[0].enclosures[0].length is None
+    assert p.items[0].enclosures[0].type is None
+
+
 def test_broken_version():
     with pytest.raises(FeedParseError):
         parse_rss_file('tests/rss/broken-version.xml')

@@ -23,8 +23,8 @@ class RSSImage:
 @attr.s
 class RSSEnclosure:
     url: str = attr.ib()
-    length: int = attr.ib()
-    type: str = attr.ib()
+    length: Optional[int] = attr.ib()
+    type: Optional[str] = attr.ib()
 
 
 @attr.s
@@ -102,10 +102,14 @@ def _get_source(element: Element, name,
 
 
 def _get_enclosure(element: Element) -> RSSEnclosure:
+    length = element.attrib.get('length')
+    if length is not None:
+        length = int(length)
+
     return RSSEnclosure(
         element.attrib['url'],
-        int(element.attrib['length']),
-        element.attrib['type'],
+        length,
+        element.attrib.get('type'),
     )
 
 
