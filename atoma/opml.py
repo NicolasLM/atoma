@@ -4,14 +4,13 @@ from typing import Optional, List
 from xml.etree.ElementTree import Element
 
 import attr
-from defusedxml.ElementTree import parse
 
 from .utils import parse_xml, get_text, get_int, get_datetime
 
 
 @attr.s
 class OPMLOutline:
-    text: str = attr.ib()
+    text: Optional[str] = attr.ib()
     type: Optional[str] = attr.ib()
     xml_url: Optional[str] = attr.ib()
     description: Optional[str] = attr.ib()
@@ -46,7 +45,7 @@ def _get_outlines(element: Element) -> List[OPMLOutline]:
 
     for outline in element.findall('outline'):
         rv.append(OPMLOutline(
-            outline.attrib['text'],
+            outline.attrib.get('text'),
             outline.attrib.get('type'),
             outline.attrib.get('xmlUrl'),
             outline.attrib.get('description'),

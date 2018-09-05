@@ -36,6 +36,15 @@ def test_nested_subscription_list():
     ]
 
 
+def test_missing_outline_title():
+    o = parse_opml_file('tests/opml/broken-no-title.xml')
+    assert get_feed_list(o) == [
+        'https://xkcd.com/rss.xml',
+        'http://antirez.com/rss',
+        'https://what-if.xkcd.com/feed.atom',
+    ]
+
+
 def test_subscription_list():
     expected = OPML(
         title='mySubscriptions.opml',
