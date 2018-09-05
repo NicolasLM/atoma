@@ -50,6 +50,14 @@ def test_broken_missing_link():
     assert p.link is None
 
 
+def test_broken_missing_source_url():
+    # The URL of a source is mandatory by specs, but some feeds in the wild
+    # do not provide it
+    p = parse_rss_file('tests/rss/broken-missing-source-url.xml')
+    assert p.items[0].source.title == 'New York Times'
+    assert p.items[0].source.url is None
+
+
 def test_broken_version():
     with pytest.raises(FeedParseError):
         parse_rss_file('tests/rss/broken-version.xml')

@@ -30,7 +30,7 @@ class RSSEnclosure:
 @attr.s
 class RSSSource:
     title: str = attr.ib()
-    url: str = attr.ib()
+    url: Optional[str] = attr.ib()
 
 
 @attr.s
@@ -97,7 +97,7 @@ def _get_source(element: Element, name,
 
     return RSSSource(
         child.text.strip(),
-        child.attrib['url'],
+        child.attrib.get('url'),
     )
 
 
