@@ -20,6 +20,10 @@ class FeedXMLError(Exception):
     """Document is not valid XML."""
 
 
+class FeedJSONError(Exception):
+    """Document is not valid JSON."""
+
+
 def parse_xml(xml_content):
     try:
         return defused_xml_parse(xml_content)

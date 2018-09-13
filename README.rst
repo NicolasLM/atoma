@@ -6,7 +6,7 @@ Atoma
 .. image:: https://coveralls.io/repos/github/NicolasLM/atoma/badge.svg?branch=master
     :target: https://coveralls.io/github/NicolasLM/atoma?branch=master
 
-Atom and RSS feed parser for Python 3.
+Atom, RSS and JSON feed parser for Python 3.
 
 Quickstart
 ----------
@@ -41,6 +41,7 @@ Features
 
 * RSS 2.0 - `RSS 2.0 Specification <http://cyber.harvard.edu/rss/rss.html>`_
 * Atom Syndication Format v1 - `RFC4287 <https://tools.ietf.org/html/rfc4287>`_
+* JSON Feed v1 - `Specification <https://jsonfeed.org/version/1>`_
 * OPML 2.0, to share lists of feeds - `OPML 2.0 <http://dev.opml.org/spec2.html>`_
 * Typed: feeds decomposed into meaningful Python objects
 * Secure: uses defusedxml to load untrusted feeds
