@@ -12,7 +12,7 @@ from .utils import FeedParseError, FeedXMLError, FeedJSONError
 @attr.s
 class Article:
     id: str = attr.ib()
-    title: str = attr.ib()
+    title: Optional[str] = attr.ib()
     link: str = attr.ib()
     content: str = attr.ib()
     published_at: Optional[datetime] = attr.ib()
