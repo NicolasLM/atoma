@@ -1,7 +1,9 @@
 """Simple API that abstracts away the differences between feed types."""
 
 from datetime import datetime, timedelta
+import os
 from typing import Optional, List, Tuple
+import urllib.parse
 
 import attr
 
@@ -59,7 +61,8 @@ def _adapt_atom_feed(atom_feed: atom.AtomFeed) -> Feed:
                 article_link = candidate_link.href
             elif candidate_link.rel == 'enclosure':
                 attachments.append(Attachment(
-                    title=candidate_link.title,
+                    title=_get_attachment_title(candidate_link.title,
+                                                candidate_link.href),
                     link=candidate_link.href,
                     mime_type=candidate_link.type_,
                     size_in_bytes=candidate_link.length,
@@ -97,7 +100,7 @@ def _adapt_rss_channel(rss_channel: rss.RSSChannel) -> Feed:
     for item in rss_channel.items:
         attachments = [
             Attachment(link=e.url, mime_type=e.type, size_in_bytes=e.length,
-                       title=None, duration=None)
+                       title=_get_attachment_title(None, e.url), duration=None)
             for e in item.enclosures
         ]
         articles.append(Article(
@@ -126,7 +129,8 @@ def _adapt_json_feed(json_feed: json_feed.JSONFeed) -> Feed:
     articles = list()
     for item in json_feed.items:
         attachments = [
-            Attachment(a.url, a.mime_type, a.title,
+            Attachment(a.url, a.mime_type,
+                       _get_attachment_title(a.title, a.url),
                        a.size_in_bytes, a.duration)
             for a in item.attachments
         ]
@@ -162,6 +166,14 @@ def _get_article_dates(published_at: Optional[datetime],
         return published_at, None
 
     raise FeedParseError('Article does not have proper dates')
+
+
+def _get_attachment_title(attachment_title: Optional[str], link: str) -> str:
+    if attachment_title:
+        return attachment_title
+
+    parsed_link = urllib.parse.urlparse(link)
+    return os.path.basename(parsed_link.path)
 
 
 def _simple_parse(pairs, content) -> Feed:
