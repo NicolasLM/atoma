@@ -10,6 +10,15 @@ from .utils import FeedParseError, FeedXMLError, FeedJSONError
 
 
 @attr.s
+class Attachment:
+    link: str = attr.ib()
+    mime_type: Optional[str] = attr.ib()
+    title: Optional[str] = attr.ib()
+    size_in_bytes: Optional[int] = attr.ib()
+    duration_in_seconds: Optional[int] = attr.ib()
+
+
+@attr.s
 class Article:
     id: str = attr.ib()
     title: Optional[str] = attr.ib()
@@ -17,6 +26,7 @@ class Article:
     content: str = attr.ib()
     published_at: Optional[datetime] = attr.ib()
     updated_at: Optional[datetime] = attr.ib()
+    attachments: List[Attachment] = attr.ib()
 
 
 @attr.s
@@ -39,19 +49,37 @@ def _adapt_atom_feed(atom_feed: atom.AtomFeed) -> Feed:
             content = ''
         published_at, updated_at = _get_article_dates(entry.published,
                                                       entry.updated)
+        # Find article link and attachments
+        article_link = None
+        attachments = list()
+        for candidate_link in entry.links:
+            if candidate_link.rel == 'alternate':
+                article_link = candidate_link.href
+            elif candidate_link.rel == 'enclosure':
+                attachments.append(Attachment(
+                    title=candidate_link.title,
+                    link=candidate_link.href,
+                    mime_type=candidate_link.type_,
+                    size_in_bytes=candidate_link.length,
+                    duration_in_seconds=None
+                ))
+
         articles.append(Article(
             entry.id_,
             entry.title.value,
-            entry.links[0].href,
+            article_link,
             content,
             published_at,
-            updated_at
+            updated_at,
+            attachments
         ))
 
-    try:
-        link = atom_feed.links[0].href
-    except IndexError:
-        link = None
+    # Find feed link
+    link = None
+    for candidate_link in atom_feed.links:
+        if candidate_link.rel == 'self':
+            link = candidate_link.href
+            break
 
     return Feed(
         atom_feed.title.value if atom_feed.title else atom_feed.id_,
@@ -65,13 +93,19 @@ def _adapt_atom_feed(atom_feed: atom.AtomFeed) -> Feed:
 def _adapt_rss_channel(rss_channel: rss.RSSChannel) -> Feed:
     articles = list()
     for item in rss_channel.items:
+        attachments = [
+            Attachment(link=e.url, mime_type=e.type, size_in_bytes=e.length,
+                       title=None, duration_in_seconds=None)
+            for e in item.enclosures
+        ]
         articles.append(Article(
             item.guid or item.link,
             item.title,
             item.link,
             item.content_encoded or item.description or '',
             item.pub_date,
-            None
+            None,
+            attachments
         ))
 
     if rss_channel.title is None and rss_channel.link is None:
@@ -89,13 +123,19 @@ def _adapt_rss_channel(rss_channel: rss.RSSChannel) -> Feed:
 def _adapt_json_feed(json_feed: json_feed.JSONFeed) -> Feed:
     articles = list()
     for item in json_feed.items:
+        attachments = [
+            Attachment(a.url, a.mime_type, a.title,
+                       a.size_in_bytes, a.duration_in_seconds)
+            for a in item.attachments
+        ]
         articles.append(Article(
             item.id_,
             item.title,
             item.url,
             item.content_html or item.content_text or '',
             item.date_published,
-            item.date_modified
+            item.date_modified,
+            attachments
         ))
 
     return Feed(
