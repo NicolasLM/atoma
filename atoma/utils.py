@@ -16,11 +16,15 @@ class FeedParseError(Exception):
     """Document is an invalid feed."""
 
 
-class FeedXMLError(Exception):
+class FeedDocumentError(Exception):
+    """Document is not valid or supported file."""
+
+
+class FeedXMLError(FeedDocumentError):
     """Document is not valid XML."""
 
 
-class FeedJSONError(Exception):
+class FeedJSONError(FeedDocumentError):
     """Document is not valid JSON."""
 
 

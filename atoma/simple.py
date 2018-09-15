@@ -6,7 +6,9 @@ from typing import Optional, List, Tuple
 import attr
 
 from . import atom, rss, json_feed
-from .utils import FeedParseError, FeedXMLError, FeedJSONError
+from .utils import (
+    FeedParseError, FeedDocumentError, FeedXMLError, FeedJSONError
+)
 
 
 @attr.s
@@ -162,6 +164,25 @@ def _get_article_dates(published_at: Optional[datetime],
     raise FeedParseError('Article does not have proper dates')
 
 
+def _simple_parse(pairs, content) -> Feed:
+    is_xml = True
+    is_json = True
+    for parser, adapter in pairs:
+        try:
+            return adapter(parser(content))
+        except FeedXMLError:
+            is_xml = False
+        except FeedJSONError:
+            is_json = False
+        except FeedParseError:
+            continue
+
+    if not is_xml and not is_json:
+        raise FeedDocumentError('File is not a supported feed type')
+
+    raise FeedParseError('File is not a valid supported feed')
+
+
 def simple_parse_file(filename: str) -> Feed:
     """Parse an Atom, RSS or JSON feed from a local file."""
     pairs = (
@@ -169,13 +190,7 @@ def simple_parse_file(filename: str) -> Feed:
         (atom.parse_atom_file, _adapt_atom_feed),
         (json_feed.parse_json_feed_file, _adapt_json_feed)
     )
-    for parser, adapter in pairs:
-        try:
-            return adapter(parser(filename))
-        except (FeedParseError, FeedXMLError, FeedJSONError):
-            continue
-
-    raise FeedParseError('File is not a valid supported feed')
+    return _simple_parse(pairs, filename)
 
 
 def simple_parse_bytes(data: bytes) -> Feed:
@@ -185,10 +200,4 @@ def simple_parse_bytes(data: bytes) -> Feed:
         (atom.parse_atom_bytes, _adapt_atom_feed),
         (json_feed.parse_json_feed_bytes, _adapt_json_feed)
     )
-    for parser, adapter in pairs:
-        try:
-            return adapter(parser(data))
-        except (FeedParseError, FeedXMLError, FeedJSONError):
-            continue
-
-    raise FeedParseError('Data is not a valid supported feed')
+    return _simple_parse(pairs, data)
