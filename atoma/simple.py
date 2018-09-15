@@ -1,6 +1,6 @@
 """Simple API that abstracts away the differences between feed types."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional, List, Tuple
 
 import attr
@@ -17,7 +17,7 @@ class Attachment:
     mime_type: Optional[str] = attr.ib()
     title: Optional[str] = attr.ib()
     size_in_bytes: Optional[int] = attr.ib()
-    duration_in_seconds: Optional[int] = attr.ib()
+    duration: Optional[timedelta] = attr.ib()
 
 
 @attr.s
@@ -63,7 +63,7 @@ def _adapt_atom_feed(atom_feed: atom.AtomFeed) -> Feed:
                     link=candidate_link.href,
                     mime_type=candidate_link.type_,
                     size_in_bytes=candidate_link.length,
-                    duration_in_seconds=None
+                    duration=None
                 ))
 
         articles.append(Article(
@@ -97,7 +97,7 @@ def _adapt_rss_channel(rss_channel: rss.RSSChannel) -> Feed:
     for item in rss_channel.items:
         attachments = [
             Attachment(link=e.url, mime_type=e.type, size_in_bytes=e.length,
-                       title=None, duration_in_seconds=None)
+                       title=None, duration=None)
             for e in item.enclosures
         ]
         articles.append(Article(
@@ -127,7 +127,7 @@ def _adapt_json_feed(json_feed: json_feed.JSONFeed) -> Feed:
     for item in json_feed.items:
         attachments = [
             Attachment(a.url, a.mime_type, a.title,
-                       a.size_in_bytes, a.duration_in_seconds)
+                       a.size_in_bytes, a.duration)
             for a in item.attachments
         ]
         articles.append(Article(

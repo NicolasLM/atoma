@@ -1,3 +1,4 @@
+from datetime import timedelta
 from atoma.json_feed import (
     parse_json_feed_file, parse_json_feed_bytes, JSONFeedAttachment
 )
@@ -10,7 +11,7 @@ def test_attachments():
         mime_type='audio/x-m4a',
         title=None,
         size_in_bytes=89970236,
-        duration_in_seconds=6629
+        duration=timedelta(seconds=6629)
     )
     assert parsed.items[0].attachments == [expected]
 

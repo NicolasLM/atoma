@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 from typing import Optional, List
 
@@ -23,7 +23,7 @@ class JSONFeedAttachment:
     mime_type: str = attr.ib()
     title: Optional[str] = attr.ib()
     size_in_bytes: Optional[int] = attr.ib()
-    duration_in_seconds: Optional[int] = attr.ib()
+    duration: Optional[timedelta] = attr.ib()
 
 
 @attr.s
@@ -103,7 +103,7 @@ def _get_attachments(root, name) -> List[JSONFeedAttachment]:
             _get_text(attachment_dict, 'mime_type', optional=False),
             _get_text(attachment_dict, 'title'),
             _get_int(attachment_dict, 'size_in_bytes'),
-            _get_int(attachment_dict, 'duration_in_seconds')
+            _get_duration(attachment_dict, 'duration_in_seconds')
         ))
     return rv
 
@@ -158,6 +158,15 @@ def _get_int(root: dict, name: str, optional: bool=True) -> Optional[int]:
                              .format(name))
 
     return rv
+
+
+def _get_duration(root: dict, name: str,
+                  optional: bool=True) -> Optional[timedelta]:
+    duration = _get_int(root, name, optional)
+    if duration is None:
+        return None
+
+    return timedelta(seconds=duration)
 
 
 def _get_text(root: dict, name: str, optional: bool=True) -> Optional[str]:
