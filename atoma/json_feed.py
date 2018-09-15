@@ -5,7 +5,7 @@ from typing import Optional, List
 import attr
 import dateutil
 
-from .utils import FeedParseError, FeedJSONError
+from .exceptions import FeedParseError, FeedJSONError
 
 
 @attr.s

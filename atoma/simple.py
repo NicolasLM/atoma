@@ -6,7 +6,7 @@ from typing import Optional, List, Tuple
 import attr
 
 from . import atom, rss, json_feed
-from .utils import (
+from .exceptions import (
     FeedParseError, FeedDocumentError, FeedXMLError, FeedJSONError
 )
 

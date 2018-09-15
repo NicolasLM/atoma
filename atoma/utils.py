@@ -5,27 +5,12 @@ from typing import Optional
 import dateutil.parser
 from defusedxml.ElementTree import parse as defused_xml_parse, ParseError
 
+from .exceptions import FeedXMLError, FeedParseError
 
 ns = {
     'content': 'http://purl.org/rss/1.0/modules/content/',
     'feed': 'http://www.w3.org/2005/Atom'
 }
-
-
-class FeedParseError(Exception):
-    """Document is an invalid feed."""
-
-
-class FeedDocumentError(Exception):
-    """Document is not valid or supported file."""
-
-
-class FeedXMLError(FeedDocumentError):
-    """Document is not valid XML."""
-
-
-class FeedJSONError(FeedDocumentError):
-    """Document is not valid JSON."""
 
 
 def parse_xml(xml_content):
@@ -41,7 +26,7 @@ def get_child(element: Element, name,
 
     if child is None and not optional:
         raise FeedParseError(
-            'Could not parse RSS channel: "{}" required in "{}"'
+            'Could not parse feed: "{}" required in "{}"'
             .format(name, element.tag)
         )
 
