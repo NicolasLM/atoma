@@ -48,6 +48,12 @@ def test_broken_missing_link():
     # do not provide it
     p = parse_rss_file('tests/rss/broken-missing-link.xml')
     assert p.link is None
+    assert p.items[0].link is None
+    assert p.items[0].guid is None
+    assert p.items[1].link == 'http://link1'
+    assert p.items[1].guid == 'http://link1'
+    assert p.items[2].link == 'http://link2'
+    assert p.items[2].guid == '646326554'
 
 
 def test_broken_missing_source_url():

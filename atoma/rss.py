@@ -113,11 +113,27 @@ def _get_enclosure(element: Element) -> RSSEnclosure:
     )
 
 
+def _get_link(element: Element) -> Optional[str]:
+    """Attempt to retrieve item link.
+
+    Use the GUID as a fallback if it is a permalink.
+    """
+    link = get_text(element, 'link')
+    if link is not None:
+        return link
+
+    guid = get_child(element, 'guid')
+    if guid is not None and guid.attrib.get('isPermaLink') == 'true':
+        return get_text(element, 'guid')
+
+    return None
+
+
 def _get_item(element: Element) -> RSSItem:
     root = element
 
     title = get_text(root, 'title')
-    link = get_text(root, 'link')
+    link = _get_link(root)
     description = get_text(root, 'description')
     author = get_text(root, 'author')
     categories = [e.text for e in root.findall('category')]

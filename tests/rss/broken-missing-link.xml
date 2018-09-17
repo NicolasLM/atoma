@@ -4,7 +4,16 @@
     <title>Foo</title>
     <description>Foo bar.</description>
     <item>
-        <title>Baz item</title>
+        <title>Item 0</title>
+    </item>
+    <item>
+        <title>Item 1</title>
+        <guid isPermaLink="true">http://link1</guid>
+    </item>
+    <item>
+        <title>Item 2</title>
+        <guid >646326554</guid>
+        <link>http://link2</link>
     </item>
 </channel>
 </rss>
