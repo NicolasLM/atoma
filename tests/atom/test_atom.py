@@ -24,11 +24,6 @@ def test_broken_missing_id():
         parse_atom_file('tests/atom/broken-missing-id.xml')
 
 
-def test_broken_missing_author_name():
-    with pytest.raises(FeedParseError):
-        parse_atom_file('tests/atom/broken-missing-author-name.xml')
-
-
 def test_broken_missing_author():
     # The RFC mandates that at least one of feed or entries must have an author
     # but this is rarely the case in practice.
@@ -58,6 +53,10 @@ def test_broken_empty_fields():
     assert parsed.updated is None
 
     parsed = parse_atom_file('tests/atom/broken-empty-author.xml')
+    assert parsed.authors == []
+    assert parsed.entries[0].authors == []
+
+    parsed = parse_atom_file('tests/atom/broken-missing-author-name.xml')
     assert parsed.authors == []
     assert parsed.entries[0].authors == []
 

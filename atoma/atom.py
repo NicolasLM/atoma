@@ -140,12 +140,15 @@ def _get_text_construct(element: Element, name,
     )
 
 
-def _get_person(element: Element) -> AtomPerson:
-    return AtomPerson(
-        get_text(element, 'feed:name', optional=False),
-        get_text(element, 'feed:uri'),
-        get_text(element, 'feed:email')
-    )
+def _get_person(element: Element) -> Optional[AtomPerson]:
+    try:
+        return AtomPerson(
+            get_text(element, 'feed:name', optional=False),
+            get_text(element, 'feed:uri'),
+            get_text(element, 'feed:email')
+        )
+    except FeedParseError:
+        return None
 
 
 def _get_link(element: Element) -> AtomLink:
@@ -189,10 +192,12 @@ def _get_entry(element: Element,
 
     authors = [_get_person(e)
                for e in root.findall('feed:author', ns)] or default_authors
+    authors = [a for a in authors if a is not None]
     authors = authors or default_authors or source_authors
 
     contributors = [_get_person(e)
                     for e in root.findall('feed:contributor', ns) if e]
+    contributors = [c for c in contributors if c is not None]
 
     links = [_get_link(e) for e in root.findall('feed:link', ns)]
     categories = [_get_category(e) for e in root.findall('feed:category', ns)]
@@ -228,8 +233,10 @@ def _parse_atom(root: Element, parse_entries: bool=True) -> AtomFeed:
     updated = get_datetime(root, 'feed:updated')
     authors = [_get_person(e)
                for e in root.findall('feed:author', ns) if e]
+    authors = [a for a in authors if a is not None]
     contributors = [_get_person(e)
                     for e in root.findall('feed:contributor', ns) if e]
+    contributors = [c for c in contributors if c is not None]
     links = [_get_link(e)
              for e in root.findall('feed:link', ns)]
     categories = [_get_category(e)
