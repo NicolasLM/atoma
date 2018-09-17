@@ -57,7 +57,7 @@ def _adapt_atom_feed(atom_feed: atom.AtomFeed) -> Feed:
         article_link = None
         attachments = list()
         for candidate_link in entry.links:
-            if candidate_link.rel == 'alternate':
+            if candidate_link.rel in ('alternate', None):
                 article_link = candidate_link.href
             elif candidate_link.rel == 'enclosure':
                 attachments.append(Attachment(
