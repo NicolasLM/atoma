@@ -26,8 +26,8 @@ def get_child(element: Element, name,
 
     if child is None and not optional:
         raise FeedParseError(
-            'Could not parse feed: "{}" required in "{}"'
-            .format(name, element.tag)
+            'Could not parse feed: "{}" does not have a "{}"'
+            .format(element.tag, name)
         )
 
     elif child is None:
