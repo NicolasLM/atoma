@@ -3,9 +3,9 @@ import json
 from typing import Optional, List
 
 import attr
-import dateutil
 
 from .exceptions import FeedParseError, FeedJSONError
+from .utils import try_parse_date
 
 
 @attr.s
@@ -118,7 +118,7 @@ def _get_datetime(root: dict, name, optional: bool=True) -> Optional[datetime]:
     if text is None:
         return None
 
-    return dateutil.parser.parse(text)
+    return try_parse_date(text)
 
 
 def _get_expired(root: dict) -> bool:

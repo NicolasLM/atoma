@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from xml.etree.ElementTree import Element
 from typing import Optional
 
@@ -67,4 +67,18 @@ def get_datetime(element: Element, name,
     if text is None:
         return None
 
-    return dateutil.parser.parse(text)
+    return try_parse_date(text)
+
+
+def try_parse_date(date_str: str) -> Optional[datetime]:
+    try:
+        date = dateutil.parser.parse(date_str, fuzzy=True)
+    except (ValueError, OverflowError):
+        return None
+
+    if date.tzinfo is None:
+        # TZ naive datetime, make it a TZ aware datetime by assuming it
+        # contains UTC time
+        date = date.replace(tzinfo=timezone.utc)
+
+    return date
