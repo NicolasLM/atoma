@@ -27,7 +27,7 @@ class Attachment:
 class Article:
     id: str = attr.ib()
     title: Optional[str] = attr.ib()
-    link: str = attr.ib()
+    link: Optional[str] = attr.ib()
     content: str = attr.ib()
     published_at: Optional[datetime] = attr.ib()
     updated_at: Optional[datetime] = attr.ib()
