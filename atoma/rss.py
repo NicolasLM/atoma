@@ -103,8 +103,10 @@ def _get_source(element: Element, name,
 
 def _get_enclosure(element: Element) -> RSSEnclosure:
     length = element.attrib.get('length')
-    if length is not None:
+    try:
         length = int(length)
+    except (TypeError, ValueError):
+        length = None
 
     return RSSEnclosure(
         element.attrib['url'],

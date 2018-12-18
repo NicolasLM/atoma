@@ -8,5 +8,9 @@
         <title>Baz item</title>
         <enclosure url="https://foo.com/test.mp3" />
     </item>
+    <item>
+        <title>Foo item</title>
+        <enclosure url="https://foo.com/test.mp3" length="" />
+    </item>
 </channel>
 </rss>
