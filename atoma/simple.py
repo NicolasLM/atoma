@@ -70,8 +70,10 @@ def _adapt_atom_feed(atom_feed: atom.AtomFeed) -> Feed:
                     duration=None
                 ))
 
-        if entry.title.text_type in (atom.AtomTextType.html,
-                                     atom.AtomTextType.xhtml):
+        if entry.title is None:
+            entry_title = None
+        elif entry.title.text_type in (atom.AtomTextType.html,
+                                       atom.AtomTextType.xhtml):
             entry_title = html.unescape(entry.title.value).strip()
         else:
             entry_title = entry.title.value
