@@ -68,7 +68,7 @@ def test_broken_enclosure():
     # The length and type of an enclosure are mandatory by specs,
     # but some feeds in the wild do not provide them
     p = parse_rss_file('tests/rss/broken-enclosure.xml')
-    for i in range(0, 2):
+    for i in range(0, 3):
         assert p.items[i].enclosures[0].url == 'https://foo.com/test.mp3'
         assert p.items[i].enclosures[0].length is None
         assert p.items[i].enclosures[0].type is None

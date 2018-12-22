@@ -12,5 +12,9 @@
         <title>Foo item</title>
         <enclosure url="https://foo.com/test.mp3" length="" />
     </item>
+    <item>
+        <title>Foo item</title>
+        <enclosure url="https://foo.com/test.mp3" length="None" />
+    </item>
 </channel>
 </rss>
