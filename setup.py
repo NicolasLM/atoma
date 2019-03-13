@@ -20,6 +20,7 @@ setup(
     version=version,
     description='Atom, RSS and JSON feed parser for Python 3',
     long_description=long_description,
+    long_description_content_type='text/x-rst',
     url='https://github.com/NicolasLM/atoma',
     author='Nicolas Le Manchet',
     author_email='nicolas@lemanchet.fr',
