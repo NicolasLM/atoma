@@ -41,7 +41,7 @@ Features
 
 * RSS 2.0 - `RSS 2.0 Specification <http://cyber.harvard.edu/rss/rss.html>`_
 * Atom Syndication Format v1 - `RFC4287 <https://tools.ietf.org/html/rfc4287>`_
-* JSON Feed v1 - `Specification <https://jsonfeed.org/version/1>`_
+* JSON Feed v1 - `JSON Feed specification <https://jsonfeed.org/version/1>`_
 * OPML 2.0, to share lists of feeds - `OPML 2.0 <http://dev.opml.org/spec2.html>`_
 * Typed: feeds decomposed into meaningful Python objects
 * Secure: uses defusedxml to load untrusted feeds
@@ -64,11 +64,11 @@ read. The `RFC 4287 <https://tools.ietf.org/html/rfc4287>`_ can help lift some
 ambiguities. Finally the `feed validator <https://validator.w3.org/feed/>`_ is
 great to test hand-crafted feeds.
 
-For RSS, the `specification <http://cyber.harvard.edu/rss/rss.html>`_ and
+For RSS, the `RSS specification <http://cyber.harvard.edu/rss/rss.html>`_ and
 `rssboard.org <http://www.rssboard.org>`_ have a ton of information and
 examples.
 
-For OPML, the `specification
+For OPML, the `OPML specification
 <http://dev.opml.org/spec2.html#subscriptionLists>`_ has a paragraph dedicated
 to its usage for syndication
 
