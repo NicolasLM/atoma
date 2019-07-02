@@ -174,7 +174,7 @@ def _get_article_dates(published_at: Optional[datetime],
     if published_at:
         return published_at, None
 
-    raise FeedParseError('Article does not have proper dates')
+    return None, None
 
 
 def _get_attachment_title(attachment_title: Optional[str], link: str) -> str:
