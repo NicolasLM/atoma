@@ -164,6 +164,8 @@ def _parse_rss(root: Element) -> RSSChannel:
                              .format(rss_version))
 
     root = root.find('channel')
+    if root is None:
+        raise FeedParseError('RSS does not have a channel')
 
     title = get_text(root, 'title')
     link = get_text(root, 'link')

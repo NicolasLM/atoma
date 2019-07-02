@@ -79,6 +79,11 @@ def test_broken_version():
         parse_rss_file('tests/rss/broken-version.xml')
 
 
+def test_broken_no_channel():
+    with pytest.raises(FeedParseError):
+        parse_rss_file('tests/rss/broken-no-channel.xml')
+
+
 def test_broken_not_xml():
     with pytest.raises(FeedXMLError):
         parse_rss_bytes(b'This is not an XML document')
