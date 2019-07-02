@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
-from atoma.utils import try_parse_date
+from atoma.utils import try_parse_date, try_parse_length
 
 
 def test_try_parse_date():
@@ -17,3 +17,14 @@ def test_try_parse_date():
 
     expected = datetime(2018, 10, 10, 18, 0, tzinfo=timezone.utc)
     assert try_parse_date('Web, 10 Oct 2018 18:00:00 +0000') == expected
+
+
+def test_try_parse_length():
+    assert try_parse_length(10) == 10
+    assert try_parse_length(545332) == 545332
+    assert try_parse_length(10.5633) == 10
+    assert try_parse_length('10') == 10
+
+    assert try_parse_length('foo') is None
+    assert try_parse_length(-1) is None
+    assert try_parse_length(None) is None

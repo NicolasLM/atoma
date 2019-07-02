@@ -6,7 +6,8 @@ from xml.etree.ElementTree import Element
 import attr
 
 from .utils import (
-    parse_xml, get_child, get_text, get_int, get_datetime, FeedParseError
+    parse_xml, get_child, get_text, get_int, get_datetime, FeedParseError,
+    try_parse_length
 )
 
 
@@ -102,15 +103,9 @@ def _get_source(element: Element, name,
 
 
 def _get_enclosure(element: Element) -> RSSEnclosure:
-    length = element.attrib.get('length')
-    try:
-        length = int(length)
-    except (TypeError, ValueError):
-        length = None
-
     return RSSEnclosure(
         element.attrib['url'],
-        length,
+        try_parse_length(element.attrib.get('length')),
         element.attrib.get('type'),
     )
 

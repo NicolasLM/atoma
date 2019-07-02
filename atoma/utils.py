@@ -82,3 +82,15 @@ def try_parse_date(date_str: str) -> Optional[datetime]:
         date = date.replace(tzinfo=timezone.utc)
 
     return date
+
+
+def try_parse_length(length) -> Optional[int]:
+    try:
+        length = int(length)
+    except (TypeError, ValueError):
+        return None
+
+    if length < 0:
+        return None
+
+    return length

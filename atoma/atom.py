@@ -7,7 +7,8 @@ from xml.etree.ElementTree import Element
 import attr
 
 from .utils import (
-    parse_xml, get_child, get_text, get_datetime, FeedParseError, ns
+    parse_xml, get_child, get_text, get_datetime, FeedParseError, ns,
+    try_parse_length
 )
 
 
@@ -152,15 +153,13 @@ def _get_person(element: Element) -> Optional[AtomPerson]:
 
 
 def _get_link(element: Element) -> AtomLink:
-    length = element.attrib.get('length')
-    length = int(length) if length else None
     return AtomLink(
         element.attrib['href'],
         element.attrib.get('rel'),
         element.attrib.get('type'),
         element.attrib.get('hreflang'),
         element.attrib.get('title'),
-        length
+        try_parse_length(element.attrib.get('length'))
     )
 
 
