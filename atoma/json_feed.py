@@ -207,7 +207,7 @@ def parse_json_feed_file(filename: str) -> JSONFeed:
     with open(filename) as f:
         try:
             root = json.load(f)
-        except json.decoder.JSONDecodeError:
+        except (json.decoder.JSONDecodeError, UnicodeDecodeError):
             raise FeedJSONError('Not a valid JSON document')
 
     return parse_json_feed(root)
@@ -217,7 +217,7 @@ def parse_json_feed_bytes(data: bytes) -> JSONFeed:
     """Parse a JSON feed from a byte-string containing JSON data."""
     try:
         root = json.loads(data)
-    except json.decoder.JSONDecodeError:
+    except (json.decoder.JSONDecodeError, UnicodeDecodeError):
         raise FeedJSONError('Not a valid JSON document')
 
     return parse_json_feed(root)
