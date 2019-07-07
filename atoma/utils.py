@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from dateutil.tz import gettz
 from xml.etree.ElementTree import Element
 from typing import Optional
 
@@ -10,6 +11,20 @@ from .exceptions import FeedXMLError, FeedParseError
 ns = {
     'content': 'http://purl.org/rss/1.0/modules/content/',
     'feed': 'http://www.w3.org/2005/Atom'
+}
+
+# Common timezone abbreviations defined in RFC 822, used by RSS
+# https://tools.ietf.org/html/rfc822#section-5.1
+tzinfos = {
+    'UT': gettz('GMT'),
+    'EST': -18000,
+    'EDT': -14400,
+    'CST': -21600,
+    'CDT': -18000,
+    'MST': -25200,
+    'MDT': -21600,
+    'PST': -28800,
+    'PDT': -25200
 }
 
 
@@ -72,7 +87,7 @@ def get_datetime(element: Element, name,
 
 def try_parse_date(date_str: str) -> Optional[datetime]:
     try:
-        date = dateutil.parser.parse(date_str, fuzzy=True)
+        date = dateutil.parser.parse(date_str, fuzzy=True, tzinfos=tzinfos)
     except (ValueError, OverflowError):
         return None
 
