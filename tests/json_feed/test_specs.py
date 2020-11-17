@@ -58,6 +58,12 @@ def test_rfc_minimal():
             url='https://jsonfeed.org/',
             avatar=None
         ),
+        authors=[JSONFeedAuthor(
+            name='Brent Simmons and Manton Reece',
+            url='https://jsonfeed.org/',
+            avatar=None
+        )],
+        language=None,
         expired=False,
         items=[JSONFeedItem(
             id_='https://jsonfeed.org/2017/05/17/announcing_json_feed',
@@ -73,6 +79,8 @@ def test_rfc_minimal():
                                              tzinfo=tzoffset(None, -25200)),
             date_modified=None,
             author=None,
+            authors=[],
+            language=None,
             tags=[],
             attachments=[])]
     )

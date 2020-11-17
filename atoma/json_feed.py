@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import json
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 import attr
 
@@ -40,8 +40,9 @@ class JSONFeedItem:
     banner_image: Optional[str] = attr.ib()
     date_published: Optional[datetime] = attr.ib()
     date_modified: Optional[datetime] = attr.ib()
-    author: Optional[JSONFeedAuthor] = attr.ib()
-
+    author: Optional[JSONFeedAuthor] = attr.ib()  # Deprecated in JSON Feed 1.1
+    authors: List[JSONFeedAuthor] = attr.ib()
+    language: Optional[str] = attr.ib()
     tags: List[str] = attr.ib()
     attachments: List[JSONFeedAttachment] = attr.ib()
 
@@ -58,7 +59,9 @@ class JSONFeed:
     next_url: Optional[str] = attr.ib()
     icon: Optional[str] = attr.ib()
     favicon: Optional[str] = attr.ib()
-    author: Optional[JSONFeedAuthor] = attr.ib()
+    author: Optional[JSONFeedAuthor] = attr.ib()  # Deprecated in JSON Feed 1.1
+    authors: List[JSONFeedAuthor] = attr.ib()
+    language: Optional[str] = attr.ib()
     expired: bool = attr.ib()
 
     items: List[JSONFeedItem] = attr.ib()
@@ -77,6 +80,7 @@ def _get_items(root: dict) -> List[JSONFeedItem]:
 
 
 def _get_item(item_dict: dict) -> JSONFeedItem:
+    author, authors = _get_author(item_dict)
     return JSONFeedItem(
         id_=_get_text(item_dict, 'id', optional=False),
         url=_get_text(item_dict, 'url'),
@@ -89,7 +93,9 @@ def _get_item(item_dict: dict) -> JSONFeedItem:
         banner_image=_get_text(item_dict, 'banner_image'),
         date_published=_get_datetime(item_dict, 'date_published'),
         date_modified=_get_datetime(item_dict, 'date_modified'),
-        author=_get_author(item_dict),
+        author=author,
+        authors=authors,
+        language=_get_text(item_dict, 'language'),
         tags=_get_tags(item_dict, 'tags'),
         attachments=_get_attachments(item_dict, 'attachments')
     )
@@ -128,20 +134,29 @@ def _get_expired(root: dict) -> bool:
     return False
 
 
-def _get_author(root: dict) -> Optional[JSONFeedAuthor]:
-    author_dict = root.get('author')
-    if not author_dict:
-        return None
+def _get_author(root: dict) ->\
+        Tuple[Optional[JSONFeedAuthor], List[JSONFeedAuthor]]:
+    """Retrieve the author/authors of a JSON Feed.
 
-    rv = JSONFeedAuthor(
-        name=_get_text(author_dict, 'name'),
-        url=_get_text(author_dict, 'url'),
-        avatar=_get_text(author_dict, 'avatar'),
-    )
-    if rv.name is None and rv.url is None and rv.avatar is None:
-        return None
+    In JSON Feed version 1.0, only a single author was available and is
+    superseded in version 1.1 by the authors key.
+    """
+    authors = root.get('authors', [])
+    if not authors and root.get('author'):
+        authors.append(root.get('author'))
 
-    return rv
+    rv = [
+        JSONFeedAuthor(
+            name=_get_text(author_dict, 'name'),
+            url=_get_text(author_dict, 'url'),
+            avatar=_get_text(author_dict, 'avatar'),
+        )
+        for author_dict in authors
+    ]
+    try:
+        return rv[0], rv
+    except IndexError:
+        return None, rv
 
 
 def _get_int(root: dict, name: str, optional: bool=True) -> Optional[int]:
@@ -186,6 +201,7 @@ def _get_text(root: dict, name: str, optional: bool=True) -> Optional[str]:
 
 
 def parse_json_feed(root: dict) -> JSONFeed:
+    author, authors = _get_author(root)
     return JSONFeed(
         version=_get_text(root, 'version', optional=False),
         title=_get_text(root, 'title', optional=False),
@@ -196,7 +212,9 @@ def parse_json_feed(root: dict) -> JSONFeed:
         next_url=_get_text(root, 'next_url'),
         icon=_get_text(root, 'icon'),
         favicon=_get_text(root, 'favicon'),
-        author=_get_author(root),
+        author=author,
+        authors=authors,
+        language=_get_text(root, 'language'),
         expired=_get_expired(root),
         items=_get_items(root)
     )
