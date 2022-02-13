@@ -1,10 +1,12 @@
 Atoma
 =====
 
-.. image:: https://travis-ci.org/NicolasLM/atoma.svg?branch=master
-    :target: https://travis-ci.org/NicolasLM/atoma
-.. image:: https://coveralls.io/repos/github/NicolasLM/atoma/badge.svg?branch=master
-    :target: https://coveralls.io/github/NicolasLM/atoma?branch=master
+.. image:: https://github.com/NicolasLM/atoma/actions/workflows/test.yml/badge.svg
+    :target: https://github.com/NicolasLM/atoma/actions/workflows/test.yml
+.. image:: https://codecov.io/gh/NicolasLM/atoma/branch/main/graph/badge.svg
+    :target: https://codecov.io/gh/NicolasLM/atoma
+
+
 
 Atom, RSS and JSON feed parser for Python 3.
 
@@ -79,7 +81,7 @@ Some seldom used features are not implemented:
 
 * XML signature and encryption
 * Some Atom and RSS extensions
-* Atom content other than `text`, `html` and `xhtml`
+* Atom content other than ``text``, ``html`` and ``xhtml``
 
 License
 -------
