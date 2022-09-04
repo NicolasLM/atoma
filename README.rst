@@ -20,11 +20,17 @@ Load and parse an Atom XML file:
 .. code:: python
 
     >>> import atoma
-    >>> feed = atoma.parse_rss_file('rss-feed.xml')
+    >>> feed = atoma.parse_atom_feed('atom-feed.xml')
     >>> feed.description
     'The blog relating the daily life of web agency developers'
     >>> len(feed.items)
     5
+
+A small change is needed if you are dealing with an RSS XML file:
+
+.. code:: python
+
+    >>> feed = atoma.parse_rss_feed('rss-feed.xml')
 
 Parsing feeds from the Internet is easy as well:
 
