@@ -39,6 +39,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
         'Topic :: Text Processing :: Markup :: XML'
     ],
     keywords='atom rss json feed feeds syndication parser RFC4287',
