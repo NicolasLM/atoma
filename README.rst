@@ -20,7 +20,7 @@ Load and parse an Atom XML file:
 .. code:: python
 
     >>> import atoma
-    >>> feed = atoma.parse_atom_feed('atom-feed.xml')
+    >>> feed = atoma.parse_atom_file('atom-feed.xml')
     >>> feed.description
     'The blog relating the daily life of web agency developers'
     >>> len(feed.items)
